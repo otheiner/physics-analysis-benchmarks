@@ -5,7 +5,7 @@ This repository is a collection of original simulation-based physics analysis ta
 Even if the tasks are grounded in real analyses, the structure of the input data might make them look like a toy example. However, this structure is excellent for multimodal LLM benchmarking for several reasons:
 
 - Multi-step domain-specific reasoning
-- Parsing large CSV or PDF files (the latter is especially tricky with big tables, since LLMs usually need an intermediate step of converting them to a text file, which is prone to errors)
+- Parsing large CSV or PDF files (the latter can be tricky with big tables, since LLMs usually need an intermediate step of converting them to a text file, which is prone to errors)
 - Extracting data from images with features that are not easy for LLMs to retrieve
 - Data are simulated with known parameters, so the ground truth is known and well-defined
 - Data simulate real physics using random seeds, so these exact data have never been seen by LLMs 
@@ -16,7 +16,7 @@ I tested these tasks and each of them had at least one aspect that proved to be 
 
 # Tasks in the repo 📝
 
-This repository contains a few tasks but more may be added in the future. Details of each task are written in their respective folders together with a small sample of the data that the data generation pipeline produces and the ground truth answers. To make these tasks challenging for LLMs, sample sizes have to be larger than the snippets shown in this repository. This can be easily tweaked in the notebooks and data can be produced locally. Important parameters of each input file are stored in the pandas dataframe, which gives the user immediate access to the intermediate ground truth values and see which steps are problematic for LLMs.
+This repository contains a few tasks but more may be added in the future. Details of each task are written in their respective folders together with a small sample of the data that the data generation pipeline produces and the ground truth answers. To make these tasks challenging for LLMs, sample sizes have to be larger than the snippets shown in this repository. This can be easily tweaked in the notebooks and data can be produced locally in larger batches. Important parameters of each input file are stored in the pandas dataframe, which gives the user immediate access to the intermediate ground truth values and see which steps are problematic for LLMs.
 
 1. **Cepheid period-luminosity calibration** 🪐
 
