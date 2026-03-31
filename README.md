@@ -1,4 +1,4 @@
-# Physics analysis benchmarks
+# Physics analysis benchmarks 📊⚛️🧲🧪
 
 This repository is a collection of original simulation-based physics analysis tasks with known ground truth that I developed. They are designed for human learners and multimodal LLM benchmarking. Can you perform these analyses correctly and beat the LLMs?
 
