@@ -12,7 +12,7 @@ Even if the tasks are grounded in real analyses, the structure of the input data
 
 Tasks are designed such that the user can define the size of the generated input data and they allow tweaking parameters, such as noise or simulating reading error, which can easily make the task more difficult. Randomness is introduced into the data generation pipeline which makes it easy to generate multiple different datasets. Ground truth answer is generated together with the dataset.
 
-I tested these tasks and each of them had at least one aspect that proved to be challenging for current LLMs. However, each analysis task could potentially be solved "by hand" without the need for complicated image extraction tools, which makes them suitable for human learners (if the size of data sample is set smaller).
+I tested these tasks with Claude Opus 4.5 and each of them had at least one aspect that proved to be challenging for the model (and I assume that other LLMs could struggle as well). However, each analysis task could potentially be solved "by hand" without the need for complicated image extraction tools, which makes them suitable for human learners (if the size of data sample is set small).
 
 # Tasks in the repo 📝
 
