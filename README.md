@@ -24,6 +24,8 @@ This repository contains a few tasks but more may be added in the future. Detail
 
 This analysis focuses on the well-known relation between absolute magnitude of Cepheid variables and their period, recreating (though not exactly) the discovery by Henrietta Swan Leavitt, whose foundational contribution to observational cosmology was never recognized with a Nobel Prize. The task requires combining Hubble's law, spectroscopic data of galaxies, and photometric data about Cepheid variables. Beyond basic concepts from astrophysics, it tests methods of physical data analysis such as template cross-correlation in log-λ space.
 
+<img src="[https://github.com/otheiner/physics-analysis-benchmarks/blob/main/1_cepheid_calibration/golden_truth/cepheids_calibration.png](https://github.com/otheiner/physics-analysis-benchmarks/blob/main/1_cepheid_calibration/golden_truth/cepheids_calibration.png)" width="750">
+
 2. **Estimating Hubble's Constant** 🪐
 
 This task mimics the analysis done by Edwin Hubble which led to one of the most significant discoveries in observational cosmology. It is essentially an inverse approach to the Cepheid calibration from the previous task, with a different visual representation of the spectra. It requires analyzing spectroscopic data and identifying redshifts of fictitious galaxies. This information is then combined with photometric information about Cepheid variables in these galaxies, which allows distance calibration. The goal of the task is to use the data to estimate the local rate of expansion of the Universe — Hubble's constant.
