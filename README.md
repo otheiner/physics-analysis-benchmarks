@@ -2,7 +2,7 @@
 
 This repository is a collection of original simulation-based physics analysis tasks with known ground truth that I developed. They are designed for human learners and multimodal LLM benchmarking. Can you perform these analyses correctly and beat the LLMs?
 
-Even if the tasks are grounded in real analyses, the structure of the input data might make them look like a toy example. However, this structure is excellent for multimodal LLM benchmarking for several reasons:
+Even if the tasks are grounded in real analyses, the structure and the format of the input data might make them look like a toy example. However, this structure is excellent for multimodal LLM benchmarking for several reasons:
 
 - Multi-step domain-specific reasoning
 - Parsing large CSV or PDF files (the latter can be tricky with big tables, since LLMs usually need an intermediate step of converting them to a text file, which is prone to errors)
