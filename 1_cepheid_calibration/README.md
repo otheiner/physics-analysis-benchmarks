@@ -1,4 +1,4 @@
-# Problem definition
+## Problem definition
 
 The provided dataset contains results of a simulated observational campaign aimed at calibrating the period-luminosity relation for Cepheid variables. The relation is assumed to take the form:
 
@@ -23,4 +23,15 @@ ________________________________________
 
 - `cepheides_measurements.pdf` — database of observations
 - `spectral_lines_lab.png` — laboratory reference spectrum
-- `spectra/` — folder containing observed galaxy spectra images
+- `observed_spectra/` — folder containing observed galaxy spectra images
+
+________________________________________
+
+## About the data
+
+The dataset simulates an observational campaign targeting hypothetical galaxies. Galaxy 
+spectra are generated using tabulated emission lines in the 400–750 nm range, with 
+brightness profiles approximated by normal distributions. Spectral lines are Doppler-shifted 
+according to each galaxy's redshift, drawn from a uniform distribution. Cepheid periods 
+and apparent magnitudes are modelled using Pogson's equation and Hubble's law to produce 
+physically realistic values, with Gaussian smearing applied to simulate measurement uncertainty.
