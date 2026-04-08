@@ -25,7 +25,7 @@ This repository contains a few tasks but more may be added in the future. Detail
 This analysis focuses on the well-known relation between absolute magnitude of Cepheid variables and their period, recreating (though not exactly) the discovery by Henrietta Swan Leavitt, whose foundational contribution to observational cosmology was never recognized with a Nobel Prize. The task requires combining Hubble's law, spectroscopic data of galaxies, and photometric data about Cepheid variables. Beyond basic concepts from astrophysics, it tests methods of physical data analysis such as template cross-correlation in log-λ space.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/otheiner/physics-analysis-benchmarks/main/1_cepheid_calibration/golden_truth/cepheids_calibration.png" width="300">
+  <img src="https://raw.githubusercontent.com/otheiner/physics-analysis-benchmarks/main/1_cepheid_calibration/ground_truth/cepheids_calibration.png" width="300">
 </p>
 
 2. **Estimating Hubble's Constant [(link)](https://github.com/otheiner/physics-analysis-benchmarks/tree/main/2_hubble_constant)** 🪐
