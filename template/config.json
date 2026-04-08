@@ -1,0 +1,18 @@
+{
+  "task_name": "[TASK NAME]",
+  "seed": null,
+  "difficulties": {
+    "easy": {
+      "param_1": "parameter that changes with difficulty",
+      "param_2": "parameter that changes with difficulty"
+    },
+    "medium": {
+      "param_1": "parameter that changes with difficulty",
+      "param_2": "parameter that changes with difficulty"
+    },
+    "hard": {
+      "param_1": "parameter that changes with difficulty",
+      "param_2": "parameter that changes with difficulty"
+    }
+  }
+}
