@@ -27,7 +27,7 @@ class TestTask(Task):
         N_NUMBERS = self.get_params()['N_NUMBERS']
         FIXED_CONSTANT = self.get_params()['FIXED_CONSTANT']
 
-        # Generate numbers properly
+        # Generate numbers
         values = [np.random.rand() + FIXED_CONSTANT for _ in range(N_NUMBERS)]
 
         self.ground_truth['numbers'] = pd.DataFrame({
