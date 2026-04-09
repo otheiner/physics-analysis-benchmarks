@@ -13,8 +13,11 @@ def create_task(name: str, description: str):
     # Copy template files
     template_dir = Path('template')
     for f in template_dir.iterdir():
+        dest = task_dir / f.name
         if f.is_file():
-            shutil.copy(f, task_dir / f.name)
+            shutil.copy(f, dest)
+        elif f.is_dir():
+            shutil.copytree(f, dest, dirs_exist_ok=True)
     
     # Generate CamelCase class name from folder name
     clean      = re.sub(r'^[\d_\s]+', '', name)  # strip leading digits, underscores, spaces
@@ -39,8 +42,7 @@ def create_task(name: str, description: str):
     print(f"  1. Implement generate_task() in tasks/{name}/generate.py")
     print(f"  2. Fill in metarubrics.json templates")
     print(f"  3. Fill in config.json difficulty parameters")
-    print(f"  4. Implement populate_rubrics() in tasks/{name}/generate.py")
-    print(f"  5. Run: python evaluate.py --task {name} --validate-only")
+    print(f"  4. Run: python evaluate.py --task {name} --validate-only")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -129,13 +129,13 @@ class Task(ABC):
                                   and metarubrics dataframe
     
     Subclasses should NOT override:
-        _load_config()          - loads data generation parameters from config.json
+        load_config()          - loads data generation parameters from config.json
         save_ground_truth()     - saves ground truth dataframes to ground_truth.json, should be 
                                   called at the end of generate_task() after populating self.ground_truth
         get_params()            - returns generating parameters for given difficulty level
         get_prompt()            - loads task prompt from README.md
         get_input_files()       - loads input data files and makes them ready to send to the LLM
-        _load_metarubrics()     - loads metarubric templates from metarubrics.json - helper 
+        load_metarubrics()     - loads metarubric templates from metarubrics.json - helper 
                                  function  used in populate_metarubrics() 
         populate_metarubrics()  — populates metarubrics dict with Metarubric objects where each row
                                   corresponds to data used to create one rubric item
@@ -152,7 +152,7 @@ class Task(ABC):
         
         self.folder     = Path(task_folder)
         self.difficulty = difficulty
-        self.config     = self._load_config()
+        self.config     = self.load_config()
         self.seed       = seed
 
         # Populated by generate_task() - used to store all generated/computed values
@@ -187,7 +187,7 @@ class Task(ABC):
     # ─────────────────────────────────────────
     # Loading parameters from config file
     # ─────────────────────────────────────────
-    def _load_config(self) -> dict:
+    def load_config(self) -> dict:
         """Load config.json and return full config."""
         with open(self.folder / 'config.json') as f:
             return json.load(f)
@@ -287,7 +287,7 @@ class Task(ABC):
     # Creating dictionary of metarubrics objects based on 
     # metarubrics.json
     # ─────────────────────────────────────────
-    def _load_metarubrics(self) -> dict[str, Metarubric]:
+    def load_metarubrics(self) -> dict[str, Metarubric]:
         """Load metarubric templates from metarubrics.json and return dict of MetaRubric objects."""
         with open(self.folder / 'metarubrics.json') as f:
             data = json.load(f)
@@ -347,7 +347,7 @@ class Task(ABC):
         Uses mr.source to look up the correct DataFrame in ground_truth.
         Uses mr.columns to select only the columns needed by the template.
         """
-        self.metarubrics = self._load_metarubrics()
+        self.metarubrics = self.load_metarubrics()
         
         for mr in self.metarubrics.values():
             if mr.source not in self.ground_truth:

@@ -2,5 +2,12 @@
 #**/input_data
 #**/ground_truth
 
+#These are ignored just for repo restructuring stage
+1_*
+2_*
+3_*
+4_*
+
+
 .vscode
 __pycache__
