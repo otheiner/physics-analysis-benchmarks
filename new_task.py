@@ -35,6 +35,12 @@ def create_task(name: str, description: str):
     content     = content.replace('[YOUR NAME]',       args.author)
     content     = content.replace('[BRIEF DESCRIPTION]', description)
     generate_py.write_text(content)
+
+    # Replace placeholders in config.json
+    config_json = task_dir / 'config.json'
+    content       = config_json.read_text()
+    content       = content.replace('[TASK NAME]', name)
+    config_json.write_text(content)
     
     print(f"✓ Created task: tasks/{name}/")
     print(f"  Class name: {class_name}Task")

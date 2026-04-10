@@ -16,6 +16,7 @@ from src.task import Task
 
 class TestTask(Task):
     """
+    #TODO Make use of SEED!!!
     This test task computes mean of given numbers.
     """
 
@@ -26,6 +27,7 @@ class TestTask(Task):
 
         N_NUMBERS = self.get_params()['N_NUMBERS']
         FIXED_CONSTANT = self.get_params()['FIXED_CONSTANT']
+        np.random.seed(self.seed)
 
         # Generate numbers
         values = [np.random.rand() + FIXED_CONSTANT for _ in range(N_NUMBERS)]
