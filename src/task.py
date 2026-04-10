@@ -296,7 +296,7 @@ class BenchmarkResults:
         lines.append(f"  Commit:     {self.git_commit}  |  {self.timestamp}")
         lines.append('═' * 50)
         lines.append(
-            f"  Benchmark total: {self.weighted_success_rate:.1%} "
+            f"  Benchmark total: {self.success_rate:.1%} "
             f"  95% CI: [{lo:.1%}, {hi:.1%}]  "
             f"({len(self.task_results)} runs)"
         )
@@ -345,7 +345,6 @@ class BenchmarkResults:
     def save(self, results_dir: str = 'results'):
         """
         Save all results to results/benchmark_results_{timestamp}.json.
-        Creates directory if it doesn't exist.
         """
         Path(results_dir).mkdir(parents=True, exist_ok=True)
         filepath = Path(results_dir) / f'benchmark_results_{self.timestamp}.json'

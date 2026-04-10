@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 import re
 
-def create_task(name: str, description: str):
+def create_task(name: str, author: str, description: str):
     task_dir = Path('tasks') / name.replace(' ', '_')
     task_dir.mkdir(parents=True, exist_ok=True)
     
@@ -32,7 +32,7 @@ def create_task(name: str, description: str):
     content     = generate_py.read_text()
     content     = content.replace('TaskName',          class_name)
     content     = content.replace('[TASK NAME]',       name)
-    content     = content.replace('[YOUR NAME]',       args.author)
+    content     = content.replace('[YOUR NAME]',       author)
     content     = content.replace('[BRIEF DESCRIPTION]', description)
     generate_py.write_text(content)
 
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     parser.add_argument('--author', default='<FILL-THIS-IN>')
     parser.add_argument('--description', default='<FILL-THIS-IN>')
     args = parser.parse_args()
-    create_task(args.name, args.description)
+    create_task(args.name, args.author, args.description)
