@@ -4,3 +4,4 @@ scipy
 statsmodels
 matplotlib
 litellm
+ollama # Python client — server must be installed separately: https://ollama.com

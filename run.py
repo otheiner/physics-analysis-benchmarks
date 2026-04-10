@@ -1,11 +1,11 @@
 import argparse
-import subprocess
 import importlib
 import inspect
 from datetime import datetime
 from pathlib import Path
 from src.task import Task, BenchmarkResults
 from src.evaluator import Evaluator
+from src.utils import get_git_hash
 
 
 def parse_args():
@@ -28,19 +28,6 @@ def parse_args():
     parser.add_argument('--list',          action='store_true',
                         help='List discovered tasks and exit.')
     return parser.parse_args()
-
-
-def get_git_hash() -> str:
-    try:
-        return subprocess.check_output(
-            ['git', 'rev-parse', '--short', 'HEAD']
-        ).decode().strip()
-    except FileNotFoundError:
-        print("⚠  git not found — commit hash unavailable")
-        return 'unknown'
-    except subprocess.CalledProcessError:
-        print("⚠  git command failed — are you in a git repository?")
-        return 'unknown'
 
 
 def discover_tasks(tasks_dir='tasks') -> dict:
