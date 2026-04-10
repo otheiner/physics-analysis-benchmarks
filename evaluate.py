@@ -102,7 +102,7 @@ def main():
             task.generate_rubrics()  # generate rubrics based on metarubrics and templates
             
             if args.validate_only:
-                print(f"✓ Validated — skipping model evaluation")
+                print(f"✓ Validated {task_name} — skipping model evaluation")
                 continue
             
             # ── Evaluation phase ──────────────────────────

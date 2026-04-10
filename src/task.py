@@ -117,7 +117,35 @@ class MetarubricResult:
             f"      ({self.success_rate:.1%} ± {self.standard_error:.1%}, "
             f"      95% CI: [{lo:.1%}, {hi:.1%}])"
         )
+
+# ─────────────────────────────────────────────────────────────
+# TaskResults
+# ─────────────────────────────────────────────────────────────
+@dataclass
+class TaskResults:
+    """
+    Results of evaluating a task.
     
+    Attributes:
+        task_name: name of the task
+        metarubric_results: list of metarubric results
+    """
+    task_name: str
+    metarubric_results: list[MetarubricResult]
+
+
+# ─────────────────────────────────────────────────────────────
+# BenchmarkResults
+# ─────────────────────────────────────────────────────────────
+@dataclass
+class BenchmarkResults:
+    """
+    Results of evaluating a benchmark — collection of task results.
+    
+    Attributes:
+        task_results: list of TaskResults for each evaluated task
+    """
+    task_results: list[TaskResults]
 
 # ─────────────────────────────────────────────────────────────
 # Task - abstract base class for benchmark tasks
@@ -132,21 +160,20 @@ class Task(ABC):
                                   and metarubrics dataframe
     
     Subclasses should NOT override:
-        load_config()          - loads data generation parameters from config.json
+        load_config()           - loads data generation parameters from config.json
         save_ground_truth()     - saves ground truth dataframes to ground_truth.json, should be 
                                   called at the end of generate_task() after populating self.ground_truth
         get_params()            - returns generating parameters for given difficulty level
         get_prompt()            - loads task prompt from README.md
         get_input_files()       - loads input data files and makes them ready to send to the LLM
-        load_metarubrics()     - loads metarubric templates from metarubrics.json - helper 
-                                 function  used in populate_metarubrics() 
+        load_metarubrics()      - loads metarubric templates from metarubrics.json - helper 
+                                  function  used in populate_metarubrics() 
         populate_metarubrics()  — populates metarubrics dict with Metarubric objects where each row
                                   corresponds to data used to create one rubric item
         validate_metarubrics()  - validates the metarubrics (checks for mismatches in metarubrics.json and
                                   ground_truth.json)
         generate_rubrics()      - generates rubrics.json - data rows from Metarubric objects are 
                                   unpacked to individual rubric criteria and saved to rubrics.json
-        evaluate()              - evaluates model response against rubrics.json
     """
 
     def __init__(self, task_folder: str, 
