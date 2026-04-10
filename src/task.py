@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 import base64
 from pathlib import Path
+from scipy import stats
 
 from dataclasses import dataclass, field
 from statsmodels.stats.proportion import proportion_confint
@@ -51,11 +52,13 @@ class Metarubric:
     columns:        list[str]    = field(init=False)
     dataframe:      pd.DataFrame = field(init=False)
     
+
     def __post_init__(self):
         """Called automatically after __init__."""
         self.columns   = re.findall(r'\{(\w+)[^}]*\}', self.description)
         self.dataframe = pd.DataFrame(columns=self.columns)
     
+
     def unpack(self) -> list[str]:
         """Expand description with each row of dataframe."""
         if self.source == 'none':
@@ -91,12 +94,6 @@ class MetarubricResult:
         return self.passed / self.total if self.total > 0 else 0.0
 
     @property
-    def standard_error(self) -> float:
-        """Standard deviation of success rate — Bernoulli."""
-        p = self.success_rate
-        return np.sqrt(p * (1 - p) / self.total) if self.total > 0 else 0.0
-
-    @property
     def confidence_interval(self) -> tuple[float, float]:
         """Wilson score 95% CI — better than normal approximation for small N."""
         if self.total == 0:
@@ -114,7 +111,7 @@ class MetarubricResult:
         return (
             f"{self.metarubric_name}: "
             f"      {self.passed}/{self.total} "
-            f"      ({self.success_rate:.1%} ± {self.standard_error:.1%}, "
+            f"      ({self.success_rate:.1%}, "
             f"      95% CI: [{lo:.1%}, {hi:.1%}])"
         )
 
@@ -127,12 +124,114 @@ class TaskResults:
     Results of evaluating a task.
     
     Attributes:
-        task_name: name of the task
-        metarubric_results: list of metarubric results
+        task_name:           name of the task
+        seed:                seed used to generate the instance of the task
+        difficulty:          difficulty of the task fixes value of parameters from config.json
+        model:               model under test
+        judge:               model used as a judge
+        git_commit:          git commit hash to make it possible to trace back to the exact code used for evaluation
+        timestamp:           timestamp of when the evaluation was run
+        metarubric_results:  list of metarubric results
     """
-    task_name: str
     metarubric_results: list[MetarubricResult]
+    task_name:          str
+    seed:               int
+    difficulty:         str
+    model:              str
+    judge:              str
+    git_commit:         str
+    timestamp:          str
 
+    @property
+    def weighted_success_rate(self) -> float:
+        """Weighted average success rate across metarubrics."""
+        total_weight = sum(mr.weight for mr in self.metarubric_results)
+        weighted_sum = sum(mr.success_rate * mr.weight
+                          for mr in self.metarubric_results)
+        return weighted_sum / total_weight if total_weight > 0 else 0.0
+
+    @property
+    def confidence_interval(self) -> tuple[float, float]:
+        """Wilson score 95% CI aggregated across metarubrics using weights."""
+        passed = sum(mr.passed for mr in self.metarubric_results)
+        total  = sum(mr.total for mr in self.metarubric_results)
+        if total == 0:
+            return (0.0, 0.0)
+        lo, hi = proportion_confint(
+            passed,
+            total,
+            alpha=0.05,
+            method='wilson'
+        )
+        return (lo, hi)
+
+    def __str__(self) -> str:
+        lo, hi = self.confidence_interval
+        lines = [
+            f"Task:       {self.task_name}",
+            f"Model:      {self.model}",
+            f"Difficulty: {self.difficulty}  |  Seed: {self.seed}",
+            f"Judge:      {self.judge}",
+            f"Commit:     {self.git_commit}  |  {self.timestamp}",
+            f"{'─' * 50}"
+        ]
+        for mr in self.metarubric_results:
+            lines.append(f"  {mr}")
+        lines.append(f"{'─' * 50}")
+        lines.append(
+            f"  Weighted total: {self.weighted_success_rate:.1%} "
+            f"  95% CI: [{lo:.1%}, {hi:.1%}]"
+        )
+        return '\n'.join(lines)
+
+    def to_dict(self) -> dict:
+        lo, hi = self.confidence_interval
+        return {
+            'task':       self.task_name,
+            'seed':       self.seed,
+            'difficulty': self.difficulty,
+            'model':      self.model,
+            'judge':      self.judge,
+            'git_commit': self.git_commit,
+            'timestamp':  self.timestamp,
+            'metarubrics': [
+                {
+                    'name':         mr.metarubric_name,
+                    'total':        mr.total,
+                    'passed':       mr.passed,
+                    'weight':       mr.weight,
+                    'success_rate': mr.success_rate,
+                    'ci_low':       mr.confidence_interval[0],
+                    'ci_high':      mr.confidence_interval[1]
+                }
+                for mr in self.metarubric_results
+            ],
+            'aggregate': {
+                'weighted_success_rate': self.weighted_success_rate,
+                'ci_low':                lo,
+                'ci_high':               hi
+            }
+        }
+
+    def save(self, results_dir: str = 'results'):
+        """
+        Save results to results/{task_name}/{model}__{difficulty}__seed{seed}.json
+        Creates directory if it doesn't exist.
+        """
+        # Sanitise model name for filename — replace / and : with -
+        model_clean = self.model.replace('/', '-').replace(':', '-')
+
+        task_dir = Path(results_dir) / self.task_name
+        task_dir.mkdir(parents=True, exist_ok=True)
+
+        filename = f"{model_clean}__{self.difficulty}__seed{self.seed}.json"
+        filepath = task_dir / filename
+
+        with open(filepath, 'w') as f:
+            json.dump(self.to_dict(), f, indent=2)
+
+        print(f"✓ Results saved: {filepath}")
+        return filepath
 
 # ─────────────────────────────────────────────────────────────
 # BenchmarkResults
@@ -141,11 +240,101 @@ class TaskResults:
 class BenchmarkResults:
     """
     Results of evaluating a benchmark — collection of task results.
-    
+
     Attributes:
-        task_results: list of TaskResults for each evaluated task
+        task_results:  list of TaskResults for each evaluated task
+        models:        models evaluated - can be multiple
+        judge:         judge model used for all runs
+        difficulty:    difficulty level
+        seeds:         random seeds used
+        git_commit:    git commit hash for reproducibility
+        timestamp:     timestamp of when benchmark run started
     """
-    task_results: list[TaskResults]
+    task_results:  list[TaskResults]
+    models:        list[str]
+    judge:         str
+    difficulty:    str
+    seeds:         list[int]
+    git_commit:    str
+    timestamp:     str
+
+    @property
+    def success_rate(self) -> float:
+        """Success rate across all task results."""
+        if not self.task_results:
+            return 0.0
+        return sum(tr.weighted_success_rate
+                   for tr in self.task_results) / len(self.task_results)
+
+    @property
+    def confidence_interval(self) -> tuple[float, float]:
+        """95% CI across task success rates."""
+        rates = [tr.weighted_success_rate for tr in self.task_results]
+        if len(rates) < 2:
+            return (0.0, 1.0)
+        
+        mean  = np.mean(rates)
+        se    = np.std(rates, ddof=1) / np.sqrt(len(rates))
+        z     = stats.norm.ppf(0.975)  # 95% confidence interval
+        
+        return (
+            float(max(0.0, mean - z * se)),
+            float(min(1.0, mean + z * se))
+        )
+
+    def __str__(self) -> str:
+        lo, hi = self.confidence_interval
+        lines = []
+        for tr in self.task_results:
+            lines.append(str(tr))
+            lines.append('')
+        lines.append('═' * 50)
+        lines.append(f"  Models:     {', '.join(self.models)}")
+        lines.append(f"  Judge:      {self.judge}")
+        lines.append(f"  Difficulty: {self.difficulty}")
+        lines.append(f"  Seeds:      {self.seeds}")
+        lines.append(f"  Commit:     {self.git_commit}  |  {self.timestamp}")
+        lines.append('═' * 50)
+        lines.append(
+            f"  Benchmark total: {self.weighted_success_rate:.1%} "
+            f"  95% CI: [{lo:.1%}, {hi:.1%}]  "
+            f"({len(self.task_results)} runs)"
+        )
+        return '\n'.join(lines)
+
+    def to_dict(self) -> dict:
+        lo, hi = self.confidence_interval
+        return {
+            'run': {
+                'models':     self.models,
+                'judge':      self.judge,
+                'difficulty': self.difficulty,
+                'seeds':      self.seeds,
+                'git_commit': self.git_commit,
+                'timestamp':  self.timestamp
+            },
+            'task_results': [tr.to_dict() for tr in self.task_results],
+            'aggregate': {
+                'success_rate': self.success_rate,
+                'ci_low':                lo,
+                'ci_high':               hi,
+                'n_tasks':                len(self.task_results)
+            }
+        }
+
+    def save(self, results_dir: str = 'results'):
+        """
+        Save all results to results/benchmark_results_{timestamp}.json.
+        Creates directory if it doesn't exist.
+        """
+        Path(results_dir).mkdir(parents=True, exist_ok=True)
+        filepath = Path(results_dir) / f'benchmark_results_{self.timestamp}.json'
+
+        with open(filepath, 'w') as f:
+            json.dump(self.to_dict(), f, indent=2)
+
+        print(f"✓ Benchmark results saved: {filepath}")
+        return filepath
 
 # ─────────────────────────────────────────────────────────────
 # Task - abstract base class for benchmark tasks
