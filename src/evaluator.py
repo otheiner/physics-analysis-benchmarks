@@ -57,11 +57,11 @@ class Evaluator:
             )
             model_output = response.choices[0].message.content
     
-            print(f"\n{'─' * 50}")
-            print(f"MODEL OUTPUT ({model}):")
-            print(f"{'─' * 50}")
-            print(model_output)
-            print(f"{'─' * 50}\n")
+            # print(f"\n{'─' * 50}")
+            # print(f"MODEL OUTPUT ({model}):")
+            # print(f"{'─' * 50}")
+            # print(model_output)
+            # print(f"{'─' * 50}\n")
             
             return model_output
 

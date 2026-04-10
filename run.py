@@ -94,10 +94,12 @@ def main():
         task_class = all_tasks[task_name]
         
         for seed in args.seeds:
-            print(f"\n{'─'*50}")
+            print(f"\n{'='*50}")
+            print(f"TASK GENERATION")
+            print(f"{'='*50}")
             print(f"Task:       {task_name}")
-            print(f"Difficulty: {args.difficulty}")
-            print(f"Seed:       {seed}")
+            # print(f"Difficulty: {args.difficulty}")
+            # print(f"Seed:       {seed}")
             
             # ── Setup phase ───────────────────────────────
             task = task_class(
@@ -118,8 +120,8 @@ def main():
             
             for tested_model in args.models:
                 # ── Evaluation phase ──────────────────────────
-                print(f"Model:      {tested_model}")
-                print(f"Judge:      {args.judge}")
+                # print(f"Model:      {tested_model}")
+                # print(f"Judge:      {args.judge}")
                 
                 result = evaluator.run(
                     task  = task,
@@ -127,13 +129,15 @@ def main():
                     judge = args.judge
                 )
 
-                print(result)
+                #print(result)
                 result.save()
                 benchmark.task_results.append(result)
 
     # ── Final summary ─────────────────────────────────────
     if not args.validate_only:
         print(f"\n{'═' * 50}")
+        print("BENCHMARK RESULTS")
+        print('═' * 50)
         print(benchmark)
         benchmark.save()
 

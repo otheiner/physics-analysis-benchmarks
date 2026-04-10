@@ -170,17 +170,17 @@ class TaskResults:
         lines = [
             f"Task:       {self.task_name}",
             f"Model:      {self.model}",
-            f"Difficulty: {self.difficulty}  |  Seed: {self.seed}",
             f"Judge:      {self.judge}",
+            f"Difficulty: {self.difficulty}  |  Seed: {self.seed}",
             f"Commit:     {self.git_commit}  |  {self.timestamp}",
-            f"{'─' * 50}"
+            f"  {'─' * 50}"
         ]
         for mr in self.metarubric_results:
             lines.append(f"  {mr}")
-        lines.append(f"{'─' * 50}")
+        lines.append(f"  {'─' * 50}")
         lines.append(
-            f"  Weighted total: {self.weighted_success_rate:.1%} "
-            f"  95% CI: [{lo:.1%}, {hi:.1%}]"
+            f"Weighted total: {self.weighted_success_rate:.1%}, "
+            f"95% CI: [{lo:.1%}, {hi:.1%}]"
         )
         return '\n'.join(lines)
 
@@ -230,7 +230,7 @@ class TaskResults:
         with open(filepath, 'w') as f:
             json.dump(self.to_dict(), f, indent=2)
 
-        print(f"✓ Results saved: {filepath}")
+        #print(f"✓ Results saved: {filepath}")
         return filepath
 
 # ─────────────────────────────────────────────────────────────
@@ -295,12 +295,11 @@ class BenchmarkResults:
         lines = []
 
         # Run metadata 
-        lines.append('═' * 50)
-        lines.append(f"  Judge:      {self.judge}")
-        lines.append(f"  Difficulty: {self.difficulty}")
-        lines.append(f"  Seeds:      {self.seeds}")
-        lines.append(f"  Commit:     {self.git_commit}  |  {self.timestamp}")
-        lines.append('═' * 50)
+        lines.append(f"Judge:      {self.judge}")
+        lines.append(f"Difficulty: {self.difficulty}")
+        lines.append(f"Seeds:      {self.seeds}")
+        lines.append(f"Commit:     {self.git_commit}  |  {self.timestamp}")
+        lines.append('-' * 50)
 
         # Per-model summary 
         for model, results in self.results_by_model().items():
@@ -311,8 +310,8 @@ class BenchmarkResults:
             lo        = float(max(0.0, mean - z * se))
             hi        = float(min(1.0, mean + z * se))
 
-            lines.append(f"  Model: {model}")
-            lines.append(f"  {'─' * 46}")
+            lines.append(f"Model: {model}")
+            lines.append(f"{'─' * 50}")
             for tr in results:
                 lines.append(str(tr))
                 lines.append('')
