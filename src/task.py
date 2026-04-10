@@ -302,8 +302,33 @@ class BenchmarkResults:
         )
         return '\n'.join(lines)
 
+    def results_by_model(self) -> dict[str, list[TaskResults]]:
+        """Group task results by model for per-model analysis."""
+        by_model = {}
+        for tr in self.task_results:
+            if tr.model not in by_model:
+                by_model[tr.model] = []
+            by_model[tr.model].append(tr)
+        return by_model
+
     def to_dict(self) -> dict:
-        lo, hi = self.confidence_interval
+        # Group results by model for per-model breakdown
+        by_model = self.results_by_model()
+        model_summaries = {}
+        for model, results in by_model.items():
+            rates        = [tr.weighted_success_rate for tr in results]
+            mean         = float(np.mean(rates))
+            se           = float(np.std(rates, ddof=1) / np.sqrt(len(rates))) if len(rates) > 1 else 0.0
+            z            = stats.norm.ppf(0.975) # 95% confidence interval
+            lo           = float(max(0.0, mean - z * se))
+            hi           = float(min(1.0, mean + z * se))
+            model_summaries[model] = {
+                'success_rate': mean,
+                'ci_low':       lo,
+                'ci_high':      hi,
+                'n_tasks':      len(results)
+            }
+
         return {
             'run': {
                 'models':     self.models,
@@ -313,13 +338,8 @@ class BenchmarkResults:
                 'git_commit': self.git_commit,
                 'timestamp':  self.timestamp
             },
+            'by_model': model_summaries,
             'task_results': [tr.to_dict() for tr in self.task_results],
-            'aggregate': {
-                'success_rate': self.success_rate,
-                'ci_low':                lo,
-                'ci_high':               hi,
-                'n_tasks':                len(self.task_results)
-            }
         }
 
     def save(self, results_dir: str = 'results'):
