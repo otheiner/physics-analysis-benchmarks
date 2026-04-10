@@ -413,4 +413,4 @@ class Task(ABC):
         with open(rubrics_path, 'w') as f:
             json.dump(rubrics_data, f, indent=2)
 
-        print(f"✓ Rubrics saved: {rubrics_path}")
+        print(f"✓ Rubrics generated and saved: {rubrics_path}")

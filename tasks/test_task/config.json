@@ -1,5 +1,5 @@
 {
-    "task_name": "test task",
+    "task_name": "Test task",
 
     "difficulties": {
         "easy": {
@@ -14,6 +14,6 @@
     },
 
     "fixed_parameters": {
-        "FIXED_CONSTANT": 42
+        "OFFSET": 42
     }
 }

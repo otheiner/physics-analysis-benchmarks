@@ -16,22 +16,24 @@ from src.task import Task
 
 class TestTask(Task):
     """
-    #TODO Make use of SEED!!!
-    This test task computes mean of given numbers.
+    This task computes mean of provided list of numbers.
     """
 
     def generate_task(self):
         """
-        This is test task
+        This is test task to demonstarte the framework.
         """
-
+        # Load parameters from config
         N_NUMBERS = self.get_params()['N_NUMBERS']
-        FIXED_CONSTANT = self.get_params()['FIXED_CONSTANT']
+        OFFSET = self.get_params()['OFFSET']
+
+        # Configure random seed for reproducibility
         np.random.seed(self.seed)
 
         # Generate numbers
-        values = [np.random.rand() + FIXED_CONSTANT for _ in range(N_NUMBERS)]
+        values = [np.random.rand() + OFFSET for _ in range(N_NUMBERS)]
 
+        # Save generated numbers to ground truth dictionary
         self.ground_truth['numbers'] = pd.DataFrame({
             'input_number': values
         })
@@ -39,13 +41,16 @@ class TestTask(Task):
         # Compute average
         avg = self.ground_truth['numbers']['input_number'].mean()
 
+        # Save final result to ground truth dictionary
         self.ground_truth['final_result'] = pd.DataFrame({
             'average': [avg]
         })
 
+        # Write input file to the input_dir
         with open(self.input_dir / 'input_numbers.txt', 'w') as f:
             for num in self.ground_truth['numbers']['input_number']:
                 f.write(f"{num}\n") 
         
+        # Write ground truth files to the ground_truth_dir
         with open(self.ground_truth_dir / 'answer.txt', 'w') as f:
             f.write(f"Computed average is: {self.ground_truth['final_result']['average'].iloc[0]}\n")
