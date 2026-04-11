@@ -174,14 +174,12 @@ class TaskResults:
             f"Judge:      {self.judge}",
             f"Difficulty: {self.difficulty}  |  Seed: {self.seed}",
             f"Commit:     {self.git_commit}  |  {self.timestamp}",
-            f"  {'─' * 50}"
         ]
         for mr in self.metarubric_results:
-            lines.append(f"  {mr}")
-        lines.append(f"  {'─' * 50}")
+            lines.append(f"      - {mr}")
+        lines.append(f"      {'─' * 50}")
         lines.append(
-            f"Weighted total: {self.weighted_success_rate:.1%}, "
-            f"95% CI: [{lo:.1%}, {hi:.1%}]"
+            f"      Weighted total: {self.weighted_success_rate:.1%}"
         )
         return '\n'.join(lines)
 
