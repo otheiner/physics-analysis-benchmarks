@@ -1,6 +1,7 @@
 import argparse
 import importlib
 import inspect
+import requests
 from datetime import datetime
 from pathlib import Path
 from src.task import Task, BenchmarkResults
@@ -28,6 +29,23 @@ def parse_args():
     parser.add_argument('--list',          action='store_true',
                         help='List discovered tasks and exit.')
     return parser.parse_args()
+
+
+def check_ollama_if_needed(models: list[str], judge: str):
+    """Check Ollama server is reachable if any model is an Ollama model."""
+    needs_ollama = any(
+        m.startswith('ollama/') for m in models + [judge]
+    )
+    if not needs_ollama:
+        return
+
+    try:
+        requests.get('http://localhost:11434', timeout=3)
+
+    except Exception:
+        print("✗ Could not reach Ollama server.")
+        print("  Please check that Ollama is running: ollama serve")
+        raise SystemExit(1)
 
 
 def discover_tasks(tasks_dir='tasks') -> dict:
@@ -79,6 +97,7 @@ def main():
         task_names = list(all_tasks.keys())
     
     if not args.validate_only:
+        check_ollama_if_needed(args.models, args.judge)
         evaluator = Evaluator()
         benchmark = BenchmarkResults(
             task_results = [],
@@ -91,6 +110,12 @@ def main():
     )
     
     for task_name in task_names:
+        # Exclude tasks starting with '_' from benchmark unless explicitly requested
+        # Underscore prefix is a convention to hide tasks from the benchmark.
+        if task_name.startswith('_') and args.task != task_name:
+            print(f"✗ Skipping {task_name} — use --task {task_name} to run explicitly)")
+            continue
+
         task_class = all_tasks[task_name]
         
         for seed in args.seeds:
