@@ -11,21 +11,22 @@
 
 ## What is this?
 
-XXXX is a framework for procedurally generated scientific tasks grounded in real data analysis workflows. Every run produces fresh instances with mathematically guaranteed correct rubrics — making benchmark contamination structurally impossible while keeping evaluation criteria strictly aligned with the generated data.
+XXXX is a framework for evaluating LLMs on realistic scientific analysis workflows using procedurally generated tasks with perfectly synchronized rubrics.
 
-Task generation is randomised but fully reproducible: fixing a random seed produces identical instances, allowing results to be traced back to exact inputs. Multiple seeds enable treating LLM evaluation as a series of independent trials — amenable to standard statistical methods such as confidence intervals and hypothesis testing. This allows distinguishing genuine model capability from response variability, and enables statistically principled model comparison.
+Every run produces fresh multimodal instances (plots, CSVs, data tables) from a controlled generative process. The key innovation is source-grounded metarubrics: rubric templates that are automatically populated directly from the generated ground truth. This guarantees that evaluation criteria are always perfectly aligned with the task data — eliminating rubric drift by construction.
+
+Because tasks are generated from a fixed distribution controlled by difficulty parameters and random seeds, the framework supports statistically rigorous evaluation. Multiple independent seeds at the same difficulty level allow treating each run as an independent trial, enabling proper confidence intervals, per-rubric breakdowns, and robust model comparisons.
 
 
 ## The core idea
 
-Traditional benchmarks store fixed evaluation questions, which can leak into model training data — rendering the benchmark obsolete. This is typically addressed either by withholding evaluation datasets or by continuously adding new questions. The former sacrifices transparency; the latter requires significant ongoing effort and prevents objective comparison across benchmark versions.
+Traditional benchmarks rely on fixed test sets that can leak into training data, quickly becoming saturated or contaminated. Common solutions — hiding test sets or constantly creating new questions — either sacrifice transparency or require unsustainable maintenance effort.
 
-Procedural generation offers an alternative: tasks are generated fresh each run, so there is nothing to leak. However, this introduces a new challenge — keeping evaluation rubrics aligned with the generated data. For tasks with a single final answer this is straightforward, but multi-step scientific analyses require granular rubrics that check intermediate results. LLM-generated rubrics partially address this, but introduce rubric drift: the grading criteria are no longer guaranteed to match the generated data.
+Procedural generation solves the leakage problem by creating fresh instances on every run. However, it introduces a new challenge: how do you keep evaluation rubrics aligned with dynamically generated data, especially in complex multi-step scientific tasks? Most approaches either use static rubrics or ask an LLM to generate rubrics on the fly (which introduces inconsistency and hallucination).
 
-Our approach resolves this with a simple observation: the same generating distribution used to produce task instances can be used to populate rubric templates deterministically. We call these templates metarubrics. Because metarubrics are instantiated from the same simulation that produces the input data, their correctness is guaranteed by construction — no manual validation or LLM generation required. Metarubrics also naturally support tasks with repeated reasoning steps, such as extracting measurements from each object in a dataset, where the number of rubric criteria scales automatically with the generated data.
+Our solution is simpler and more robust: use the same generating process that creates the task data to also instantiate the rubrics. We define lightweight metarubrics — templates with explicit source pointers to the ground truth. These templates are automatically populated with concrete values from the simulation, ensuring that every rubric criterion is mathematically guaranteed to be correct and perfectly matched to the instance.
 
-
-
+This approach naturally scales to tasks with variable numbers of steps (e.g., extracting measurements from 10 vs 100 objects) and provides a clean foundation for statistical aggregation across seeds.
 
 
 ## Quick start
