@@ -20,13 +20,11 @@ Because tasks are generated from a fixed distribution controlled by difficulty p
 
 ## The core idea
 
-Traditional benchmarks rely on fixed test sets that can leak into training data, quickly becoming saturated or contaminated. Common solutions — hiding test sets or constantly creating new questions — either sacrifice transparency or require unsustainable maintenance effort.
+Traditional benchmarks rely on fixed test sets that leak into training data, becoming contaminated or saturated. Common solutions — hiding test sets or constantly adding new questions — either sacrifice transparency or require unsustainable effort.
 
-Procedural generation solves the leakage problem by creating fresh instances on every run. However, it introduces a new challenge: how do you keep evaluation rubrics aligned with dynamically generated data, especially in complex multi-step scientific tasks? Most approaches either use static rubrics or ask an LLM to generate rubrics on the fly (which introduces inconsistency and hallucination).
+Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
 
-Our solution is simpler and more robust: use the same generating process that creates the task data to also instantiate the rubrics. We define lightweight metarubrics — templates with explicit source pointers to the ground truth. These templates are automatically populated with concrete values from the simulation, ensuring that every rubric criterion is mathematically guaranteed to be correct and perfectly matched to the instance.
-
-This approach naturally scales to tasks with variable numbers of steps (e.g., extracting measurements from 10 vs 100 objects) and provides a clean foundation for statistical aggregation across seeds.
+Our solution: use the same generating process that creates the task data to also instantiate the rubrics. We call these templates **metarubrics**. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation.
 
 
 ## Quick start
