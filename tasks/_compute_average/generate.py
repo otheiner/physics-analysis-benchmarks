@@ -1,5 +1,5 @@
 """
-Task: Test task
+Task: Compute average
 Description: This is the test task to test the framework. The model needs 
              to compute the average of given numbers.
 
@@ -14,7 +14,7 @@ from pathlib import Path
 from src.task import Task
 
 
-class TestTask(Task):
+class ComputeAverage(Task):
     """
     This task computes mean of provided list of numbers.
     """
