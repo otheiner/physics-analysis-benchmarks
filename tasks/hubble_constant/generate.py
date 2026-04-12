@@ -28,6 +28,7 @@ class HubbleConstant(Task):
     # ############################################################
     # # Function to produce graphical spectra
     # ############################################################
+    @staticmethod
     def plot_spectrum(input_spectrum : dict[float, float], lambda_min: float, 
                       lambda_max : float, title: str, name : str, save_to: str) -> None:
         def gaussian(x, mu, sigma, amplitude):
@@ -36,7 +37,7 @@ class HubbleConstant(Task):
         wavelength = np.linspace(lambda_min, lambda_max, 7000)
         intensity = np.zeros_like(wavelength)
         for mu, amp in input_spectrum.items():
-            intensity += gaussian(wavelength, mu, sigma=0.1, amplitude=amp)
+            intensity += gaussian(wavelength, float(mu), sigma=0.1, amplitude=amp)
         intensity /= intensity.max()
 
         image = np.tile(intensity, (80, 1))
@@ -92,7 +93,7 @@ class HubbleConstant(Task):
                 label=f'Fit: $v = H_0 \\cdot d$\n$H_0 = ({H0:.1f} \\pm {H0_err:.1f})$ km/s/Mpc')
 
         # Write the estimated Hubble's constant to a text file
-        with open(self.ground_truth / 'hubbles_constant.txt', 'w') as f:
+        with open(self.ground_truth_dir / 'hubbles_constant.txt', 'w') as f:
             print(f"The Hubble's constant estimated from the presented dataset is {H0:.1f} ± \
                 {H0_err:.1f} km/s/Mpc.", file=f)
 
@@ -141,6 +142,7 @@ class HubbleConstant(Task):
         LAB_SPECTRUM = self.get_params()['LAB_SPECTRUM']
 
         spectra_folder = self.input_dir / 'observed_spectra'
+        os.makedirs(spectra_folder)
 
         # ======= TASK GENERATION =======
         # This is the main code used to generate the task.
@@ -169,7 +171,7 @@ class HubbleConstant(Task):
                             'period [days]': pd.Series(dtype='float'),})
 
         result = pd.DataFrame({'hubble_constant' : pd.Series(dtype='float'),
-                              'stdev' : pd.Series(dtype='flaot')})
+                              'stdev' : pd.Series(dtype='float')})
         
         # Add dataframes to the ground_truth dictionary
         self.ground_truth['generated_data'] = generated_data
@@ -194,7 +196,7 @@ class HubbleConstant(Task):
                 spectrum = {}
 
                 for line in LAB_SPECTRUM.keys():
-                    shifted_line = line * (z + 1)
+                    shifted_line = float(line) * (z + 1)
                     if random.uniform(0,1) < LINE_VISIBLE_PROBABILITY:
                         spectrum[shifted_line] = LAB_SPECTRUM[line]
 
@@ -249,9 +251,9 @@ class HubbleConstant(Task):
         
         # Fit Hubble's law
         df_est = generated_data.copy()
-        df_est['z'] = generated_data['z'].round(4)
-        df_est['mean_mag_cepheid'] = generated_data['mean_mag_cepheid'].round(3)
-        df_est['period [days]'] = generated_data['period [days]'].round(4)
+        df_est['z'] = df_est['z'].round(4)
+        df_est['mean_mag_cepheid'] = df_est['mean_mag_cepheid'].round(3)
+        df_est['period [days]'] = df_est['period [days]'].round(4)
         H0, H0_err = self.fit_hubble(df_est)
 
         # Save H0 and its standard deviation to ground truth dataframe

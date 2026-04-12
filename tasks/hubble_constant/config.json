@@ -24,7 +24,7 @@
         "Z_MAX" : 0.05,
         "SIGMA_DISTANCE_CEPHEIDES" : 0.1,
         "H_DISTR_MEAN": 65,
-        "H_DISTR_STD": 10,
+        "H_DISTR_STD": 5,
         "LAMBDA_MIN": 400,
         "LAMBDA_MAX": 750,
         "LAB_SPECTRUM": {"656.3": 1.0, "500.7": 0.9, "589.0": 0.85, "589.6": 0.8, "486.1": 0.75, "495.9": 0.65, 
