@@ -7,7 +7,7 @@
 
 # Physics analysis benchmark 📊
 
-A seeded generative framework for evaluating LLMs on real scientific analysis workflows — 
+A proceduraly generative framework for evaluating LLMs on real scientific analysis workflows — 
 with perfectly synchronized rubrics and statistically robust multi-seed evaluation.
 
 
@@ -15,7 +15,7 @@ with perfectly synchronized rubrics and statistically robust multi-seed evaluati
 
 XXXX is a framework for evaluating LLMs on realistic scientific analysis workflows using procedurally generated tasks with perfectly synchronized rubrics.
 
-Every run produces fresh multimodal instances (plots, CSVs, data tables) from a controlled generative process. The key innovation is source-grounded metarubrics: rubric templates that are automatically populated directly from the generated ground truth. This guarantees that evaluation criteria are always perfectly aligned with the task data — eliminating rubric drift by construction.
+Every run produces fresh multimodal instances (plots, CSVs, data tables) from a controlled generative process. The key innovation is source-grounded metarubrics: rubric templates that are automatically populated directly from the generated ground truth. This guarantees that evaluation criteria are always perfectly aligned with the task data, eliminating rubric drift by construction.
 
 Because tasks are generated from a fixed distribution controlled by difficulty parameters and random seeds, the framework enables statistically rigorous evaluation. Running multiple independent seeds at the same difficulty level turns each evaluation into a set of independent trials, allowing proper confidence intervals, per-rubric breakdowns, and more reliable model comparisons.
 
@@ -28,9 +28,9 @@ Traditional benchmarks rely on fixed test sets that leak into training data, bec
 
 Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
 
-Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automaticaly genere variable number of atomic rubrics for repeated data extraction, which is common in scientific data analyses.
+Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automaticaly genere variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
 
-Because rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits.
+Since rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits.
 
 
 ## Quick start
