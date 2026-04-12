@@ -45,7 +45,7 @@ The framework uses [litellm](https://github.com/BerriAI/litellm), supporting bot
 cp .env.example .env   # fill in your API keys to .env
 ```
 
-Run the benchmark and produce your results (you can plug any models of your choice supported by `llmlite`):
+Run the benchmark and produce your results (you can plug any models of your choice supported by `litellm`):
 
 ```bash
 python run.py --models gemini/gemini-3.1-flash-lite-preview \
