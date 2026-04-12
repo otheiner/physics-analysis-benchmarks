@@ -45,13 +45,13 @@ The framework uses [litellm](https://github.com/BerriAI/litellm), supporting bot
 cp .env.example .env   # fill in your API keys to .env
 ```
 
-Run the benchmark and produce your results:
+Run the benchmark and produce your results (you can plug any models of your choice supported by `llmlite`):
 
 ```bash
 python run.py --models gemini/gemini-3.1-flash-lite-preview \
               --judge  gemini/gemini-2.5-flash \
               --difficulty medium \
-              --seeds 0 1 2 3 4
+              --seeds 0 1
 ```
 
 Or validate task generation without API calls and inspect generated data:
@@ -76,7 +76,7 @@ The pipeline:
 1) generate_task() - generates fresh input_data/ + ground_truth/
 2) populate_metarubrics() - fills templates from ground truth
 3) generate_rubrics() - creates instances of metarubrics and produces rubrics.json
-4) evaluator.run() - sends to model, judges output, saves results
+4) evaluator.run() - sends to model, LLM-as-judge judges output, saves results
 
 
 ## Contributing tasks
