@@ -109,11 +109,14 @@ class MetarubricResult:
 
     def __str__(self) -> str:
         lo, hi = self.confidence_interval
+
+        # Make all names the same width
+        aligned_name = (self.metarubric_name + ":").ljust(80)
         return (
-            f"{self.metarubric_name}: "
-            f"      {self.passed}/{self.total} "
-            f"      ({self.success_rate:.1%}, "
-            f"      95% CI: [{lo:.1%}, {hi:.1%}])"
+            f"{aligned_name}"
+            f"{self.passed}/{self.total} "
+            f"({self.success_rate:.1%}, "
+            f"95% CI: [{lo:.1%}, {hi:.1%}])"
         )
 
 # ─────────────────────────────────────────────────────────────

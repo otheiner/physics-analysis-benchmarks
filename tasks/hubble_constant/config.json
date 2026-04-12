@@ -31,7 +31,7 @@
     "fixed_parameters": {
         "c": 67,
         "Z_MAX" : 0.05,
-        "SIGMA_DISTANCE_CEPHEIDES" : 0.1,
+        "SIGMA_DISTANCE_CEPHEIDS" : 0.1,
         "H_DISTR_MEAN": 65,
         "H_DISTR_STD": 5,
         "LAMBDA_MIN": 400,

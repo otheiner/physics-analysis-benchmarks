@@ -131,7 +131,7 @@ class HubbleConstant(Task):
 
         #Simulation parameters
         N_GALAXIES = self.get_params()['N_GALAXIES'] #number of galaxies to simulate
-        SIGMA_DISTANCE_CEPHEIDES = self.get_params()['SIGMA_DISTANCE_CEPHEIDES'] #Stdev of distance distribution of Cepheids from the Hubble's law
+        SIGMA_DISTANCE_CEPHEIDS = self.get_params()['SIGMA_DISTANCE_CEPHEIDS'] #Stdev of distance distribution of Cepheids from the Hubble's law
         Z_MAX = self.get_params()['Z_MAX'] #Maximum redshift of the simulated galaxies
         CEPHEID_GENERATE_PROBABILITY = self.get_params()['CEPHEID_GENERATE_PROBABILITY'] #Probability of generating a Cepheid for a given galaxy
         GALAXY_GENERATE_PROBABILITY = self.get_params()['GALAXY_GENERATE_PROBABILITY'] #Probability of generating measurement of observed emission spectrtum.
@@ -217,7 +217,7 @@ class HubbleConstant(Task):
             if np.random.uniform(0,1) < CEPHEID_GENERATE_PROBABILITY and not np.isnan(z):
                 cepheid_ID = 'HDD' + ''.join(random.choices(string.digits, k=6))
                 cepheid_distance = np.random.normal(loc=true_distance, 
-                                                    scale = true_distance * SIGMA_DISTANCE_CEPHEIDES) # parsec
+                                                    scale = true_distance * SIGMA_DISTANCE_CEPHEIDS) # parsec
                 period = abs(np.random.normal(loc=60, scale=20))
                 mean_mag = -2.43*(math.log10(period) - 1) - 4.05 - 5 + 5*math.log10(cepheid_distance)
             else:
@@ -238,12 +238,12 @@ class HubbleConstant(Task):
                                     'period [days]' : period}])
             generated_data = pd.concat([generated_data, new_row], ignore_index=True)
 
-        # Print input data about cepheides to .csv file
+        # Print input data about cepheids to .csv file
         df_out = generated_data.copy()
         df_out['mean_mag_cepheid'] = df_out['mean_mag_cepheid'].map('{:.3f}'.format)
         df_out['period [days]'] = df_out['period [days]'].map('{:.4f}'.format)
         df_out[['galaxy_ID' , 'cepheid_ID', 'mean_mag_cepheid', 'period [days]']].to_csv(\
-                                self.input_dir / 'cepheides_mesurements.csv', index=False)
+                                self.input_dir / 'cepheids_mesurements.csv', index=False)
         
         # Print extracted redshifts to .csv file
         analyzed_galaxies = generated_data.loc[generated_data['z'].notna() & \

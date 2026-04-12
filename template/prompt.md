@@ -2,12 +2,19 @@
 
 <Here goes text of your prompt>
 
-Produce the following outputs:
-
-1. <Required file no. 1>
-2. <Required file no. 2>
 ________________________________________
+## Output format
 
+Structure your response exactly as follows:
+
+<INTERMEDIATE_RESULTS>:
+<result1>
+<result2>
+
+<FINAL_RESULT>:
+<final_result>
+
+________________________________________
 ## Files provided
 
 <Plese, describe structure of the input data>
