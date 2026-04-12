@@ -104,7 +104,7 @@ Then open a pull request. Any scientific process with a simulatable generating d
 If you find this work useful or interesting, please consider citing it:
 
 ```bibtex
-@misc{theiner2025prism,
+@misc{---------,
   author = {Theiner, Ondrej},
   title  = {------------},
   year   = {------------},
