@@ -1,6 +1,8 @@
 """
 Task: Hubble Constant estimation
-Description: Estimate the Hubble constant from observational data
+Description: This task recereates the famous observation done by Edwin Hubble in the 1920s, 
+            which led to the discovery of the expansion of the universe.
+
 
 Author: Ondrej Theiner
 """
@@ -22,8 +24,7 @@ from scipy.stats import linregress
 
 class HubbleConstant(Task):
     """
-    This task recereates the famous observation done by Edwin Hubble in the 1920s, which led 
-    to the discovery of the expansion of the universe.
+    Estimate the Hubble constant from observational data
     """   
     # ############################################################
     # # Function to produce graphical spectra
@@ -66,7 +67,7 @@ class HubbleConstant(Task):
 
 
     # ############################################################
-    # # Function doinf the fit of Hubble law to generated data and
+    # # Function doing the fit of Hubble's law to generated data and
     # # producing ground truth plot for reference. 
     # ############################################################
     def fit_hubble(self, df: pd.DataFrame) -> tuple[float, float]:
@@ -119,7 +120,6 @@ class HubbleConstant(Task):
         Cepheids in these galaxies and let the model estimate the Hubble constant based on these 
         data.
         """
-        # ====== CONFIGURATION =======
         # Set random seed for reproducibility
         np.random.seed(self.seed) 
 
@@ -143,21 +143,6 @@ class HubbleConstant(Task):
 
         spectra_folder = self.input_dir / 'observed_spectra'
         os.makedirs(spectra_folder)
-
-        # ======= TASK GENERATION =======
-        # This is the main code used to generate the task.
-        # This code needs to:
-        # 1) Generate input data and save it to self.input_dir
-        # 2) Generate ground truth files and save it to self.ground_truth_dir
-        # 3) Populate self.ground_truth dictionary with pandas DataFrames. These dataframes 
-        #    can be arbitrary but they should contain all generated numbers, ground_truth and
-        #    final answers. These dataframes are used as truth source for generating metarubrics,
-        #    and can be used to study exact failure modes of LLMS. File ground_truth.json is 
-        #    generated automaticall based on self.ground_truth during the task evaluation stage 
-        #    when running evaluate.py.
-        ############################################################
-        ################ Dataframe format
-        ############################################################
 
         # Define dataframes to store ground truth
         generated_data = pd.DataFrame({ 'index': pd.Series(dtype='int'),
