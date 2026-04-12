@@ -4,7 +4,7 @@
             "key": "no_of_galaxies",
             "source": "results",
             "name": "Correct number of galaxies",
-            "description": "Did model estimate redshifts of exactly {no_of_galaxies} galaxies?",
+            "description": "Did the model estimate redshifts of exactly {no_of_galaxies} galaxies?",
             "weight": 5.0
         },
         {
