@@ -74,7 +74,7 @@ Each task is defined by four files:
 
 - `prompt.md` - prompt defining the task writen in natural language
 - `generate.py` — simulation code producing input data and ground truth
-- `config.json` — difficulty parameters loaded in `generate.py`
+- `config.json` — difficulty parameters loaded in `generate.py` (each task currently defines easy, medium, hard levels)
 - `metarubrics.json` — rubric templates instantiated from generated data  
 
 The pipeline:
