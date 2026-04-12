@@ -77,7 +77,7 @@ Each task is defined by four files:
 - `config.json` — difficulty parameters loaded in `generate.py` (each task currently defines easy, medium, hard levels)
 - `metarubrics.json` — rubric templates instantiated from generated data  
 
-The pipeline:
+The framework then automatically follows this pipeline:
 
 1) `task.generate_task()` - generates fresh input_data/ + ground_truth/
 2) `task.populate_metarubrics()` - fills metarubrics (rubric templates) from ground truth
