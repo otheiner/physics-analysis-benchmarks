@@ -81,25 +81,33 @@ The pipeline:
 
 ## Contributing tasks
 
-This repo started as a small personal passion project, however, if anybody feels motivated to contribute task from their domain, I will be more than happy to assist.
+This project started as a personal passion project. If you feel motivated to contribute a task from your domain, I would be happy to help.
 
-If you feel like contributing, fork this repository and implement `generate_task()` in your domain — the framework handles everything else. Do following:
+Fork the repository and scaffold a new task:
 
 ```bash
 python new_task.py --name my_task --author "Your Name"
 ```
 
-Fill in `tasks/my_task/generate.py`, `tasks/my_task/config.json`, `tasks/my_task/metarubrics.json`.
+Implement `generate_task()` in `tasks/my_task/generate.py` and fill in `tasks/my_task/config.json` and `tasks/my_task/metarubrics.json`. The framework handles everything else.
+
 Validate without API calls:
 
 ```bash
 python run.py --task my_task --validate-only
 ```
 
-Open pull request and you are done! Any scientific process with a simulatable generating distribution can become a task — physics, mathematics, chemistry, biology, climate science,... 
-
+Then open a pull request. Any scientific process with a simulatable generating distribution can become a task — physics, mathematics, chemistry, biology, climate science, and beyond.
 
 ## Citation
 
-If you find any idea presented in this repo interesting, you are welcome to use it freely in your work, but I will be happy if you cite this repo.
+If you find this work useful or interesting, please consider citing it:
 
+```bibtex
+@misc{theiner2025prism,
+  author = {Theiner, Ondrej},
+  title  = {------------},
+  year   = {------------},
+  url    = {------------}
+}
+```
