@@ -89,7 +89,7 @@ Fork the repository and scaffold a new task:
 python new_task.py --name my_task --author "Your Name"
 ```
 
-Implement `generate_task()` in `tasks/my_task/generate.py` and fill in `tasks/my_task/config.json` and `tasks/my_task/metarubrics.json`. The framework handles everything else.
+Implement `generate_task()` in `tasks/my_task/generate.py` and fill in `tasks/my_task/config.json`, `tasks/my_task/prompt.md` and `tasks/my_task/metarubrics.json`. The framework handles everything else.
 
 Validate without API calls:
 
