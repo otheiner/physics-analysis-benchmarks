@@ -121,7 +121,8 @@ class HubbleConstant(Task):
         data.
         """
         # Set random seed for reproducibility
-        np.random.seed(self.seed) 
+        np.random.seed(self.seed)
+        random.seed(self.seed)
 
         # Physics constants
         c = self.get_params()['c']  # km/s
