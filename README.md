@@ -42,10 +42,10 @@ pip install -r requirements.txt
 The framework uses [litellm](https://github.com/BerriAI/litellm), supporting both local models via [Ollama](https://ollama.com) and API-based models. To use API models, add your keys:
 
 ```bash
-cp .env.example .env  # fill in your API keys to .env
+cp .env.example .env   # fill in your API keys to .env
 ```
 
-Run the benchmark and produce your own results:
+Run the benchmark and produce your results:
 
 ```bash
 python run.py --models gemini/gemini-3.1-flash-lite-preview \
@@ -54,7 +54,7 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
               --seeds 0 1 2 3 4
 ```
 
-Or validate task generation without API calls and inspect the "secret" generated data:
+Or validate task generation without API calls and inspect generated data:
 
 ```bash
 python run.py --validate-only
@@ -65,8 +65,40 @@ python run.py --validate-only
 
 ## How it works
 
+Each task is defined by three files:
+
+- `generate.py` — simulation code producing input data and ground truth
+- `metarubrics.json` — rubric templates instantiated from generated data  
+- `config.json` — difficulty parameters
+
+The pipeline:
+
+1) generate_task() - generates fresh input_data/ + ground_truth/
+2) populate_metarubrics() - fills templates from ground truth
+3) generate_rubrics() - creates instances of metarubrics and produces rubrics.json
+4) evaluator.run() - sends to model, judges output, saves results
+
 
 ## Contributing tasks
 
+This repo started as a small personal passion project, however, if anybody feels motivated to contribute task from their domain, I will be more than happy to assist.
+
+If you feel like contributing, fork this repository and implement `generate_task()` in your domain — the framework handles everything else. Do following:
+
+```bash
+python new_task.py --name my_task --author "Your Name"
+```
+
+Fill in `tasks/my_task/generate.py`, `tasks/my_task/config.json`, `tasks/my_task/metarubrics.json`.
+Validate without API calls:
+
+```bash
+python run.py --task my_task --validate-only
+```
+
+Open pull request and you are done! Any scientific process with a simulatable generating distribution can become a task — physics, mathematics, chemistry, biology, climate science,... 
+
 
 ## Citation
+
+
