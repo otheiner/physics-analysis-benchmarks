@@ -69,12 +69,12 @@ python run.py --validate-only
 
 ## How it works
 
-Each task is defined by three files:
+Each task is defined by four files:
 
 - `prompt.md` - prompt defining the task writen in natural language
 - `generate.py` — simulation code producing input data and ground truth
+- `config.json` — difficulty parameters loaded in `generate.py`
 - `metarubrics.json` — rubric templates instantiated from generated data  
-- `config.json` — difficulty parameters
 
 The pipeline:
 
