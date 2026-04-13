@@ -129,12 +129,12 @@ Validate task generation without API calls and inspect generated data locally:
 python run.py --validate-only
 ```
 
-Run the benchmark and produce your results (you can plug any models of your choice supported by `litellm`). Framework allows non-agentic (no tools allowed) and agentic (allows running python scripts) evaluation. See details in corresponding subsections below.
-
-## Non-agentic evaluation
+Run the benchmark and produce your results (you can plug any models of your choice supported by `litellm`). Framework allows non-agentic (no tools allowed) and agentic (allows running python scripts) evaluation. See details in corresponding subsections below. Details on how to run actual evaluation with or without agent is desctibed in the following expandable section.
 
 <details>
-<summary><strong>Expand here</strong></summary>
+<summary><strong>👍 Agentic vs. non-agentic evaluation (click to expand)</strong></summary>
+    
+## Non-agentic evaluation
 
 For non-agentic evaluation simply run:
 
@@ -144,14 +144,12 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
               --difficulty medium \
               --seeds 0 1
 ```
-</details>
 
 ## Agentic evaluation
 
-<details>
-<summary><strong>Expand here</strong></summary>
+Agentic evaluation enables running python with a few allowed python libraries specified in `sandbox/requirements.txt`. Python is executed in safe Docker sandbox environment without access to the Internet, memory-capped to 512 MB, not allowing writing `.pyc` files. **First of all, run docker daemon on your machine!** Dockerfile for building the sandbox is located in `sandbox` folder. 
 
-Agentic evaluation enables running python with a few allowed python libraries specified in `sandbox/requirements.txt`. Python is executed in safe Docker sandbox environment without access to the Internet, memory-capped to 512 MB, not allowing writing `.pyc` files. **First of all, run docker daemon on your machine!** Build the sandbox Docker image and run benchmark using flag `--agentic`:
+Build the sandbox Docker image and run benchmark using flag `--agentic`:
 
 ```bash
 docker build -t benchmark-sandbox sandbox/
