@@ -14,6 +14,14 @@ You may execute Python code using execute_python tool. Using tools is not mandat
 - Standard python libraries are available plus these: {libraries}
   - Do NOT use any libraries outside this list
 
+### Provided input data
+All input files are provided directly in this conversation and are immediately available to you:
+
+- Images are visible — you can inspect them visually without any tool calls
+- CSV and text files are readable directly from this conversation without loading them via a script
+
+Use tools only when programmatic processing is necessary — for example when the data volume is too large for visual inspection, or when precise numerical computation is required.
+
 ### Constraints
 - You have at most {max_turns} tool calls.
 - Plan before executing and use your turn efficiently
