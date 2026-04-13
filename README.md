@@ -9,7 +9,7 @@
 
 # Physics analysis benchmark 📊
 
-A procedurally generative framework for multimodal LLMs evaluation on real scientific analysis workflows — with perfectly synchronized rubrics and statistically robust multi-seed evaluation.
+A procedurally generative framework for evaluating LLMs multimodal agentic capabilities on real scientific analysis workflows — with perfectly synchronized rubrics and statistically robust multi-seed evaluation.
 
 ## What is this?
 
