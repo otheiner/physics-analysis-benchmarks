@@ -104,7 +104,7 @@ Our framework utilizes user-specified seeds to ensure that task generation is ra
 
 ## Motivation 
 
-I am a particle physicist who recently got into LLM evaluation and I built this as a passion project to test if models can actually do science. I designed the architecture to specifically address major issues in the field, such as benchmark contamination, rubric drift, and the stochastic nature of LLM responses. If you have any questions, comments, suggestionson, or you would be interested in contributing, don't hesitate to reach out to me [here](https://otheiner.github.io/#contact).
+I am a particle physicist who recently got into LLM evaluation and I built this as a passion project to test if models can actually do science. I tried to designed the architecture to specifically address major issues in the field, such as benchmark contamination, rubric drift, and the stochastic nature of LLM responses. If you have any questions, comments, suggestionson, or you would be interested in contributing, don't hesitate to reach out to me [here](https://otheiner.github.io/#contact).
 
 
 # Quick start
