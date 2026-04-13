@@ -25,7 +25,7 @@ def parse_args():
                         default='ollama/llama3.2',
                         help  = 'Model used as judge.')
     parser.add_argument('--difficulty',    type = str,
-                        default='medium',
+                        default='easy',
                         choices=['easy', 'medium', 'hard'])
     parser.add_argument('--seeds',         type = int, nargs = '+',
                         default=[0],
