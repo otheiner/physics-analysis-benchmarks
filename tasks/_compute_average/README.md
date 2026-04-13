@@ -1,6 +1,6 @@
 # Compute average - minimal working example task
 
-This task is simple reading numbers from the file and computing average of these numbers. Moderately capable LLM can do this task simply in non-agentic regime, however, smaller models might halucinate average for medium and hard difficulty.
+This task is simple reading numbers from the file and computing average of these numbers. Moderately capable LLM can do this task simply in non-agentic regime, however, smaller models might halucinate average for medium and hard difficulty when the list is long.
 
 You can check the main logic behind the task implementation and also see how metarubrics (rubric templating) works.
 
