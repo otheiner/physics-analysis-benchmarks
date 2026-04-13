@@ -117,22 +117,22 @@ cd physics-analysis-benchmarks
 pip install -r requirements.txt
 ```
 
-The framework uses [litellm](https://github.com/BerriAI/litellm), supporting both local models via [Ollama](https://ollama.com) and API-based models. If you want to use local models make sure that your `ollama` server is installed and running (see Ollama link). To use API models, add your keys:
-
-```bash
-cp .env.example .env   # fill in your API keys to .env
-```
-
 Validate task generation without API calls and inspect generated data locally:
 
 ```bash
 python run.py --validate-only
 ```
 
-Run the benchmark and produce your results (you can plug any models of your choice supported by `litellm`). Framework allows non-agentic (no tools allowed) and agentic (allows running python scripts) evaluation. See details in corresponding subsections below. Details on how to run actual evaluation with or without agent is desctibed in the following expandable section.
+Run the benchmark and produce your results (you can plug any models of your choice supported by `litellm`). Framework allows non-agentic (no tools allowed) and agentic (allows running python scripts) evaluation. Details on how to run actual evaluation with or without agent is described in the following expandable section.
 
 <details>
 <summary><strong>👍 Agentic vs. non-agentic evaluation (click to expand)</strong></summary>
+
+The framework uses [litellm](https://github.com/BerriAI/litellm), supporting both local models via [Ollama](https://ollama.com) and API-based models. If you want to use local models make sure that your `ollama` server is installed and running (see Ollama link). To use API models, add your keys:
+
+```bash
+cp .env.example .env   # fill in your API keys to .env
+```
     
 ## Non-agentic evaluation
 
