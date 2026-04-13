@@ -61,6 +61,9 @@ class TestTask(Task):
         plt.savefig(path, dpi=100, bbox_inches='tight', facecolor='white')
         plt.close()
 
+    # ############################################################
+    # # Main method that needs to be implemented by user
+    # ############################################################
     def generate_task(self):
         # Load configuration
         N_FILES   = self.get_params()['N_FILES']

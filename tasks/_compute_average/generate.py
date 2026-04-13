@@ -19,6 +19,9 @@ class ComputeAverage(Task):
     This task computes mean of provided list of numbers.
     """
 
+    # ############################################################
+    # # Main method that needs to be implemented by user
+    # ############################################################
     def generate_task(self):
         """
         This is test task to demonstarte the framework.
