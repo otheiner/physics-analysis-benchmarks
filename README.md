@@ -9,7 +9,7 @@
 
 # Physics analysis benchmark 📊
 
-A procedural framework for contamination-resistant evaluation of LLMs multimodal agentic capabilities on real scientific analysis workflows — with perfectly synchronized rubrics and statistically robust multi-seed evaluation.
+*A procedural framework for contamination-resistant evaluation of LLMs multimodal agentic capabilities on real scientific analysis workflows — with perfectly synchronized rubrics and statistically robust multi-seed evaluation.*
 
 ## What is this?
 
@@ -21,18 +21,10 @@ Because tasks are generated from a fixed distribution controlled by difficulty p
 
 The repository includes several tasks inspired by landmark discoveries in particle physics and cosmology, such as invariant mass reconstruction and Cepheid variable calibration.
 
-## The core idea
-
-Traditional benchmarks rely on fixed test sets that leak into training data, becoming contaminated or saturated. Common solutions are hiding test sets or constantly adding new questions. These approaches either sacrifice benchmark transparency or require unsustainable effort.
-
-Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
-
-Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
-
-Since rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits. Expand the section bellow and see the concrete example how metarubrics and rubrics work.
+Expand the section bellow and see the concrete example how metarubrics and rubrics work.
 
 <details>
-<summary><strong>🔍 Metarubrics vs. Rubrics (click to expand)</strong></summary>
+<summary><strong>✅ Metarubrics vs. Rubrics (click to expand)</strong></summary>
 
 ## Metarubrics and Rubrics
 
@@ -47,7 +39,7 @@ The user provides a high-level template with placeholders.
       "key": "z_estimation",
       "source": "analyzed_galaxies",
       "name": "Redshift estimation",
-      "description": "Did the model compute that {galaxy_ID} has redshift {z}, or a value strictly inside the interval [{z_min}, {z_max}]?",
+      "description": "Did the model compute that galaxy {galaxy_ID} has redshift {z}, or a value strictly inside the interval [{z_min}, {z_max}]?",
       "weight": 5.0
     }
 ]
@@ -66,15 +58,15 @@ The framework populates the template using the ground truth from the procedurall
       "rubrics": [
         {
           "id": 1,
-          "criterion": "Did the model compute that GID075008 has redshift 0.02978, or value strictly inside interval [0.02928 , 0.03028]?"
+          "criterion": "Did the model compute that galaxy GID075008 has redshift 0.02978, or value strictly inside interval [0.02928 , 0.03028]?"
         },
         {
           "id": 2,
-          "criterion": "Did the model compute that GID104365 has redshift 0.01951, or value strictly inside interval [0.01901 , 0.02001]?"
+          "criterion": "Did the model compute that galaxy GID104365 has redshift 0.01951, or value strictly inside interval [0.01901 , 0.02001]?"
         },
         {
           "id": 3,
-          "criterion": "Did the model compute that GID173179 has redshift 0.01831, or value strictly inside interval [0.01781 , 0.01881]?"
+          "criterion": "Did the model compute that galaxy GID173179 has redshift 0.01831, or value strictly inside interval [0.01781 , 0.01881]?"
         }
       ]
     }
@@ -87,9 +79,19 @@ Because tasks are generated procedurally, the number of generated rubrics (insta
 
 </details>
 
+## The core idea
+
+Traditional benchmarks rely on fixed test sets that leak into training data, becoming contaminated or saturated. Common solutions are hiding test sets or constantly adding new questions. These approaches either sacrifice benchmark transparency or require unsustainable effort.
+
+Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
+
+Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
+
+Since rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits.
+
 ## Motivation 
 
-I am a particle physicist who recently got into LLM evaluation and I built this as a passion project to test if models can actually do science. I designed the architecture to specifically address major issues in the field, such as benchmark contamination, rubric drift, and the stochastic nature of LLM responses. I welcome any suggestions, feedback, and pull requests from other scientists or AI researchers. You can contact me [here](https://otheiner.github.io/#contact).
+I am a particle physicist who recently got into LLM evaluation and I built this as a passion project to test if models can actually do science. I designed the architecture to specifically address major issues in the field, such as benchmark contamination, rubric drift, and the stochastic nature of LLM responses. If you have any questions, comments, suggestionson, or you would be interested in contributing, don't hesitate to reach out to me [here](https://otheiner.github.io/#contact).
 
 
 # Quick start
