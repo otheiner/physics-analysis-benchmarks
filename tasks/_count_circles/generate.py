@@ -62,11 +62,14 @@ class TestTask(Task):
         plt.close()
 
     def generate_task(self):
+        # Load configuration
         N_FILES   = self.get_params()['N_FILES']
         N_CIRCLES = self.get_params()['N_CIRCLES']
 
+        # Initialize random seed for reproducibility
         np.random.seed(self.seed)
 
+        # Main loop generating the task
         records = []
         for i in range(1, N_FILES + 1):
             positions = self._place_circles(np.random.randint(1, N_CIRCLES + 1))
@@ -74,6 +77,7 @@ class TestTask(Task):
             self._draw_image(positions, self.input_dir / f'{i}.png')
             records.append({'filename': f'{i}.png', 'n_circles': n_placed})
 
+        # Save dataframes with numbers used in the task to ground truth dictionary
         self.ground_truth['images'] = pd.DataFrame(records)
 
         self.ground_truth['result'] = pd.DataFrame({
