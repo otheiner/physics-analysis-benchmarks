@@ -1,25 +1,46 @@
 {
     "metarubrics": [
         {
-            "key": "object_values",
-            "source": "dataframe name in ground_truth.json used to extract data",
-            "name": "Name of the metarubric item 1",
-            "description": "Did the model correctly identify {object_id} with value {value:.5f}?",
+            "key": "faulty_supplies",
+            "source": "qa_data",
+            "name": "Correctly listed faulty supplies.",
+            "description": "Did the model list supply {supply_ID} as faulty?",
             "weight": 1.0
         },
         {
-            "key": "object_gains",
-            "source": "dataframe name in ground_truth.json used to extract data",
-            "name": "Name of the metarubric item 2",
-            "description": "Did the model correctly identify a net gain {value:.5f} for {object_id}?",
-            "weight": 2.0
+            "key": "supplies_frequency",
+            "source": "qa_data",
+            "name": "Correctly listed faulty supplies.",
+            "description": "Did the model list that supply {supply_ID} has frequency {frequency} Hz?",
+            "weight": 1.0
         },
         {
-            "key": "final_parameter",
-            "source": "dataframe name in ground_truth.json used to extract data",
-            "name": "Name of the metarubric item 3",
-            "description": "Did the model correctly estimate the final parameter {value:.5f}?",
-            "weight": 1.5
+            "key": "supply_batch",
+            "source": "qa_data",
+            "name": "Correctly listed batch of supply.",
+            "description": "Did the model list that supply {supply_ID} was manufactured in batch {batch}?",
+            "weight": 1.0
+        },
+        {
+            "key": "supply_manufacturing_machine",
+            "source": "qa_data",
+            "name": "Correctly listed manufacturing machine of supply.",
+            "description": "Did the model list that supply {supply_ID} was manufactured by machine {machine}?",
+            "weight": 1.0
+        },
+        {
+            "key": "faulty_machines",
+            "source": "faulty_machines",
+            "name": "Correctly identified faulty machines.",
+            "description": "Did the model list machine {machine} as faulty?",
+            "weight": 1.0
+        },
+        {
+            "key": "not_faulty_machines",
+            "source": "not_faulty_machines",
+            "name": "Skipped not faulty machines.",
+            "description": "Did the model not include machine {machine} in the list of faulty machines??",
+            "weight": 1.0
         }
     ]
 }
