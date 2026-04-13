@@ -71,9 +71,6 @@ class HubbleConstant(Task):
     # # producing ground truth plot for reference. 
     # ############################################################
     def fit_hubble(self, df: pd.DataFrame) -> tuple[float, float]:
-        # Set LaTeX fonts for plot
-        plt.rcParams['text.usetex'] = True
-        plt.rcParams['font.family'] = 'serif'
         mask = df['cepheid_distance [pc]'].notna() & df['z'].notna()
         x = df.loc[mask, 'cepheid_distance [pc]'] / 1e6
         y = self.get_params()['c'] * ((df.loc[mask, 'z'] + 1)**2 -1) \
@@ -91,7 +88,7 @@ class HubbleConstant(Task):
 
         ax.scatter(x, y, s=20, alpha=0.7, color='crimson', label='Measured data')
         ax.plot(x_fit, y_fit, color='steelblue', lw=2,
-                label=f'Fit: $v = H_0 \\cdot d$\n$H_0 = ({H0:.1f} \\pm {H0_err:.1f})$ km/s/Mpc')
+                label=f'Fit: $v = H_0 * d$\n$H_0 = ({H0:.1f} ± {H0_err:.1f})$ km/s/Mpc')
 
         # Write the estimated Hubble's constant to a text file
         with open(self.ground_truth_dir / 'hubbles_constant.txt', 'w') as f:
@@ -100,7 +97,7 @@ class HubbleConstant(Task):
 
         ax.set_xlabel('Cepheid Distance d [Mpc]', fontsize=12)
         ax.set_ylabel('Recession Velocity [km/s]', fontsize=12)
-        ax.set_title('\\textbf{Hubble\'s Law}', fontsize=13, fontweight='bold')
+        ax.set_title('Hubble\'s Law', fontsize=13, fontweight='bold')
         ax.legend(fontsize=11)
         ax.grid(True, alpha=0.3, linestyle='--')
         ax.set_xlim(0, None)
