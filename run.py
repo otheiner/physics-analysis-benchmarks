@@ -137,8 +137,6 @@ def main():
             print(f"TASK GENERATION")
             print(f"{'='*50}")
             print(f"Task:       {task_name}")
-            # print(f"Difficulty: {args.difficulty}")
-            # print(f"Seed:       {seed}")
             
             # ── Setup phase ───────────────────────────────
             task = task_class(

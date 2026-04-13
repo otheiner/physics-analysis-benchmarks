@@ -26,7 +26,7 @@ class TaskName(Task):
         # ======= RANOMNESS =======
         # Always use self.seed for reproducibility. Different generators can be used
         # but the seed has to be specified and it has to be self.seed. Seeds derived 
-        # deterministically from this seed are also fine. Use np.random.seed(self.seed),. 
+        # deterministically from this seed are also fine. Use np.random.seed(self.seed), 
         # or random.seed(self.seed). Doing something like np.random.seed(self.seed + 1) 
         # is also fine if you need to generate different random numbers in different places.  
 
