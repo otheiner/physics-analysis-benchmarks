@@ -1,3 +1,5 @@
+![CI](https://github.com/otheiner/physics-analysis-benchmarks/actions/workflows/ci.yml/badge.svg)
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
@@ -7,7 +9,7 @@
 
 # Physics analysis benchmark 📊
 
-A proceduraly generative framework for multimodal LLMs evaluation on real scientific analysis workflows — with perfectly synchronized rubrics and statistically robust multi-seed evaluation.
+A procedurally generative framework for multimodal LLMs evaluation on real scientific analysis workflows — with perfectly synchronized rubrics and statistically robust multi-seed evaluation.
 
 ## What is this?
 
@@ -21,11 +23,11 @@ The repository includes several tasks inspired by landmark discoveries in partic
 
 ## The core idea
 
-Traditional benchmarks rely on fixed test sets that leak into training data, becoming contaminated or saturated. Common solutions are hiding test sets or constantly adding new questions. These approaches either sacrifice benchmrk transparency or require unsustainable effort.
+Traditional benchmarks rely on fixed test sets that leak into training data, becoming contaminated or saturated. Common solutions are hiding test sets or constantly adding new questions. These approaches either sacrifice benchmark transparency or require unsustainable effort.
 
 Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
 
-Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automaticaly genere variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
+Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
 
 Since rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits.
 
@@ -97,7 +99,7 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
 
 Each task is defined by four files:
 
-- `prompt.md` - prompt defining the task writen in natural language
+- `prompt.md` - prompt defining the task written in natural language
 - `generate.py` - simulation code producing input data and ground truth
 - `config.json` - difficulty parameters loaded in `generate.py` (each task currently defines easy, medium, hard levels)
 - `metarubrics.json` - rubric templates instantiated from generated data  
