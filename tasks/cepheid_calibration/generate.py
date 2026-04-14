@@ -175,6 +175,17 @@ class CepheidCalibration(Task):
         LAMBDA_MAX = self.get_params()["LAMBDA_MAX"] #nm
         LAB_SPECTRUM = self.get_params()["LAB_SPECTRUM"]
 
+        # Cepheid calibration parameters for simulation
+        # Roughly copies physics but this approach forces model to do the analysis properly
+        A_MIN = self.get_params()["A_MIN"]
+        A_MAX = self.get_params()["A_MAX"]
+        B_MIN = self.get_params()["B_MIN"]
+        B_MAX = self.get_params()["B_MAX"]
+        a = np.random.uniform(A_MIN, A_MAX)
+        b = np.random.uniform(B_MIN, B_MAX)
+
+        RESULTS_A_B_TOLERANCE = self.get_params()["RESULTS_A_B_TOLERANCE"]
+
         # Dataframes used to store data
         generated_data = pd.DataFrame({ 'index': pd.Series(dtype='int'),
                     'galaxy_ID': pd.Series(dtype='str'),
@@ -191,13 +202,19 @@ class CepheidCalibration(Task):
                     'absolute_mag_estimated' : pd.Series(dtype='float')})
         
         redshifts = pd.DataFrame({'cepheid_ID': pd.Series(dtype='str'),
-                                  'z' : pd.Series(dtype='float') 
+                                  'z' : pd.Series(dtype='float') , 
+                                  'z_allowed_interval' : pd.Series(dtype='float') ,
                                 })
         
+        excluded_cepheids = pd.DataFrame({'cepheid_ID': pd.Series(dtype='str')})
+        
         results = pd.DataFrame({'a' : pd.Series(dtype='float') ,
+                                'a_allowed_interval' : pd.Series(dtype='str') ,
                                 'a_sigma' : pd.Series(dtype='float') ,
-                                'b' : pd.Series(dtype='float') ,
-                                'b_sigma' : pd.Series(dtype='float') 
+                                'a_sigma_allowed_interval' : pd.Series(dtype='str') ,
+                                'b_allowed_interval' : pd.Series(dtype='str') ,
+                                'b_sigma' : pd.Series(dtype='float') ,
+                                'b_sigma_allowed_interval' : pd.Series(dtype='str') , 
                                 })
         
         # Plot laboratory spectrum
@@ -236,7 +253,7 @@ class CepheidCalibration(Task):
                                                     scale=true_distance * SIGMA_DISTANCE_CEPHEIDES) #pc
                 period = abs(np.random.normal(loc=60, scale=20))
                 if not np.isnan(true_distance):
-                    mean_mag = -2.43*(math.log10(period) - 1) - 4.05 - 5 + 5*math.log10(cepheid_distance)
+                    mean_mag = a*(math.log10(period) - 1) + b - 5 + 5*math.log10(cepheid_distance)
                 else:
                     # This is dirty trick to confuse model when I merge some cells in the csv table  
                     # and gives some unrealistic values of magnitude in the table (while not being 
@@ -257,7 +274,7 @@ class CepheidCalibration(Task):
                                                                 wav_max=LAMBDA_MAX, reading_resolution = READING_PRECISION,
                                                                 n_pts=7000)
                 distance_estimated = estimated_z * c / H0 * 10**6
-                interval = f"[{z-0.0001:.5f}; {z+0.0001:.5f}]"
+                interval = f"[{z-0.0001:.5f}, {z+0.0001:.5f}]"
             else:
                 sigma_z = np.nan
                 distance_estimated = np.nan
@@ -311,6 +328,21 @@ class CepheidCalibration(Task):
         se_slope  = np.sqrt(s2 / sxx)
         se_inter  = np.sqrt(s2 * (1/n + x.mean()**2 / sxx))
 
+        a_allowed_interval = f"[{slope-RESULTS_A_B_TOLERANCE:.2f}, {slope+RESULTS_A_B_TOLERANCE:.2f}]"
+        a_sigma_allowed_interval = f"[{se_slope-RESULTS_A_B_TOLERANCE:.2f}, {se_slope+RESULTS_A_B_TOLERANCE:.2f}]"
+        b_allowed_interval = f"[{intercept-RESULTS_A_B_TOLERANCE:.2f}, {intercept+RESULTS_A_B_TOLERANCE:.2f}]"
+        b_sigma_allowed_interval = f"[{se_inter-RESULTS_A_B_TOLERANCE:.2f}, {se_inter+RESULTS_A_B_TOLERANCE:.2f}]"
+
+        results_row = pd.DataFrame([{'a' : slope,
+                                    'a_allowed_interval' : a_allowed_interval,
+                                    'a_sigma' : se_slope,
+                                    'a_sigma_allowed_interval' : a_sigma_allowed_interval,
+                                    'b' : intercept,
+                                    'b_allowed_interval' : b_allowed_interval, 
+                                    'b_sigma' : se_inter,
+                                    'b_sigma_allowed_interval' : b_sigma_allowed_interval}])
+        results = pd.concat([results, results_row], ignore_index=True)
+
         # Plot
         x_line = np.linspace(x.min() - 0.05, x.max() + 0.05, 300)
 
@@ -347,11 +379,17 @@ class CepheidCalibration(Task):
 
 
         # Output estimated redshifts just for human reference
-        redshifts = generated_data.loc[
-                generated_data[['cepheid_ID', 'mean_mag_cepheid', 'period [days]', 'z']].notna().all(axis=1),
+        generated_data.loc[generated_data[['cepheid_ID', 'mean_mag_cepheid', 'period [days]', 'z']].notna().all(axis=1),
                             ['cepheid_ID', 'z']].sort_values('cepheid_ID').reset_index(drop=True).assign(
+                            z_estimated=lambda df: df['z'].map('{:.5f}'.format)).to_csv(self.ground_truth_dir / 'redshifts.csv', index=False)
+        
+        # Create ground truth dataframe for metarubrics
+        redshifts = generated_data.loc[generated_data[['cepheid_ID', 'mean_mag_cepheid', 'period [days]', 'z']].notna().all(axis=1),
+                            ['cepheid_ID', 'z', 'z_allowed_interval']].sort_values('cepheid_ID').reset_index(drop=True).assign(
                             z_estimated=lambda df: df['z'].map('{:.5f}'.format))
-        redshifts.to_csv(self.ground_truth_dir / 'redshifts.csv', index=False)
+        # Create ground truth dataframe for metarubrics
+        excluded_cepheids = generated_data.loc[generated_data[['cepheid_ID', 'mean_mag_cepheid', 
+                                            'period [days]', 'z']].isna().any(axis=1), ['cepheid_ID']]
 
         # Output txt report solution for human reference
         a_str = f"a = {slope:.3f} ± {se_slope:.3f}"
@@ -375,6 +413,7 @@ class CepheidCalibration(Task):
             )
 
         # Store ground truth
-        self.ground_truth['generated_data'] = generated_data
+        self.ground_truth['generated_data'] = generated_data 
         self.ground_truth['redshifts'] = redshifts
+        self.ground_truth['excluded_cepheids'] = excluded_cepheids
         self.ground_truth['results'] = results
