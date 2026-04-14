@@ -185,7 +185,7 @@ def main():
                                          "            Do all random number generators use self.seed, " \
                                          "or seeds deterministically derived from it?")
                     else:
-                        print(f"✓ Seed reproducibility confirmed")
+                        print(f"✓ Same seeds produces same results - correct")
 
 
                     # Generate third time with different seed — clears ground_truth_dir
@@ -205,7 +205,7 @@ def main():
                                          "            Do you use stochastic processes in _generate()?, " \
                                          "All random generators must use seed self.seed for reproducibility.")
                     else:
-                        print(f"✓ Stochasticity confirmed")
+                        print(f"✓ Different seeds produce different results - correct")
 
                 finally:
                     # Always clean up tmp file
