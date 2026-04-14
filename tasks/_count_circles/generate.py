@@ -18,7 +18,7 @@ IMAGE_SIZE = 512
 MARGIN     = RADIUS * 2
 
 
-class TestTask(Task):
+class CountCircles(Task):
     """
     Visual test task — model must count circles in each image.
     """
