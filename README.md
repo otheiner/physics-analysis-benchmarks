@@ -197,10 +197,10 @@ If you are considering contributing task from your domain, refer to [`CONTRIBUTI
 If you find this work useful or interesting, please consider citing it:
 
 ```bibtex
-@misc{---------,
+@misc{theiner2026parametr-bench,
   author = {Theiner, Ondrej},
-  title  = {------------},
-  year   = {------------},
-  url    = {------------}
+  title  = {PARAMETR-Bench: Procedural And Rigorous Assessment using METaRubrics},
+  year   = {2026},
+  url    = {https://github.com/otheiner/PARAMETR-Bench}
 }
 ```
