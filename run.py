@@ -179,7 +179,8 @@ def main():
 
                     if gt != ref:
                         print(f"✗ Validation failed: {task_name} — ground truth differs between runs with same seed!")
-                        raise ValueError(f"Seed reproducibility check failed for {task_name}")
+                        raise ValueError(f"Seed reproducibility check failed for {task_name}\n",
+                                         "      Do all random number generators use self.seed, or seeds deterministically derived from it?")
                     else:
                         print(f"✓ Seed reproducibility confirmed: {task_name}")
 
