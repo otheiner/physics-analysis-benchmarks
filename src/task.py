@@ -619,7 +619,7 @@ class Task(ABC):
                 errors.append(
                     f"Metarubric '{mr.key}': "
                     f"dataframe is empty. "
-                    f"Source was '{mr.source}' — Did populate_rubrics() run?"
+                    f"Source was '{mr.source}' — Did populate_metarubrics() run?"
                     f"Does task.generate() populate ground_truth dictionary?"
                 )
                 continue

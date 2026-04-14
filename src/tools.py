@@ -1,6 +1,6 @@
 from pathlib import Path
 
-# Exctract allowed libraries from requirements.txt
+# Extract allowed libraries from requirements.txt
 def _load_sandbox_libraries() -> str:
     """Extract package names from sandbox/requirements.txt."""
     req_path = Path(__file__).parent.parent / 'sandbox' / 'requirements.txt'
@@ -23,7 +23,7 @@ TOOLS = [
             "description": (
                 "Execute a Python script to analyse the task data. "
                 "Input files are available in the current directory. "
-                "Available libraries: {_load_sandbox_libraries()}. "
+                f"Available libraries: {_load_sandbox_libraries()}. "
                 "Print your results — stdout is returned to you."
             ),
             "parameters": {
