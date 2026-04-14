@@ -81,7 +81,7 @@ Because tasks are generated procedurally, the number of generated rubrics (insta
 
 <p align="center">
     <br>
-  <img src="https://private-user-images.githubusercontent.com/44167540/577691814-2411dc3a-c4b0-4d94-81fb-c01289c5835b.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzYxMjI5MTgsIm5iZiI6MTc3NjEyMjYxOCwicGF0aCI6Ii80NDE2NzU0MC81Nzc2OTE4MTQtMjQxMWRjM2EtYzRiMC00ZDk0LTgxZmItYzAxMjg5YzU4MzViLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MTMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDEzVDIzMjMzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTE4ZTE0YjZlYjllYzE3MjlkNjQ2M2I4ODEzYTk1MjM3MGRkZjlmMDJlY2VkM2JjYjAyNGM2YTY0YzRmY2ZhMWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.1XtGCpcRlJ--y5CUauL47pfOKtVU74JSukT1BRqSK8g" width="900" title="Preview of some input files fenerated procedurally.">
+  <img src="https://github.com/user-attachments/assets/2411dc3a-c4b0-4d94-81fb-c01289c5835b" width="900" title="Preview of some input files fenerated procedurally.">
     <br><br>
       <i> Figure: Preview of a few input files from tasks in PARAMETR-Bench generated procedurally.</i>
 </p>
