@@ -1,4 +1,4 @@
-[![CI](https://github.com/otheiner/physics-analysis-benchmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
+[![CI](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
@@ -119,7 +119,7 @@ Clone repo and install dependencies:
 
 ```bash
 git clone https://github.com/otheiner/PARAMETR-Bench.git
-cd physics-analysis-benchmarks
+cd PARAMETR-Bench
 pip install -r requirements.txt
 ```
 
