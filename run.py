@@ -6,6 +6,10 @@ import argparse
 import importlib
 import inspect
 import requests
+import shutil
+import tempfile
+import os
+import json
 from datetime import datetime
 from pathlib import Path
 from src.task import Task, BenchmarkResults
@@ -152,7 +156,38 @@ def main():
             task.generate_rubrics()  # generate rubrics based on metarubrics and templates
             
             if args.validate_only:
-                print(f"✓ Validated {task_name} — skipping model evaluation")
+                print(f"✓ Seed validation : generating {task_name} twice to check seed reproducibility.")
+
+                # Copy ground truth to system tmp before second generation
+                # (second generate_task() clears ground_truth_dir)
+                gt_path  = task.ground_truth_dir / 'ground_truth.json'
+                ref_fd, ref_path_str = tempfile.mkstemp(suffix='.json', prefix=f'parametr_{task_name}_ref_')
+                ref_path = Path(ref_path_str)
+
+                try:
+                    # Close the file descriptor — shutil.copy will write to it
+                    os.close(ref_fd)
+                    shutil.copy(gt_path, ref_path)
+
+                    # Generate second time with same seed — clears ground_truth_dir
+                    task.generate_task()
+                    task.save_ground_truth()
+
+                    # Compare
+                    with open(gt_path,  'r') as f: gt  = json.load(f)
+                    with open(ref_path, 'r') as f: ref = json.load(f)
+
+                    if gt != ref:
+                        print(f"✗ Validation failed: {task_name} — ground truth differs between runs with same seed!")
+                        raise ValueError(f"Seed reproducibility check failed for {task_name}")
+                    else:
+                        print(f"✓ Seed reproducibility confirmed: {task_name}")
+
+                finally:
+                    # Always clean up tmp file
+                    ref_path.unlink(missing_ok=True)
+
+                print(f"✓ Validation {task_name} successfully finished — skipping model evaluation")
                 continue
             
             for tested_model in args.models:
