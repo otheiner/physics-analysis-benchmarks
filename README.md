@@ -19,9 +19,9 @@ Every run produces fresh multimodal instances (plots, CSVs, data tables) from a 
 
 Because tasks are generated from a fixed distribution controlled by difficulty parameters and random seeds, the framework enables statistically rigorous evaluation. Running multiple independent seeds at the same difficulty level turns each evaluation into a set of independent trials, allowing proper confidence intervals, per-metarubric breakdowns, and more reliable model comparisons.
 
-The repository includes several tasks inspired by landmark discoveries in particle physics and cosmology, such as invariant mass reconstruction and Cepheid variable calibration.
+The repository includes several tasks inspired by landmark discoveries in particle physics and cosmology, such as invariant mass reconstruction and Cepheid variable calibration. However, any scientific process with a simulatable generating distribution can become a task — physics, mathematics, chemistry, biology, climate science, and beyond.
 
-Expand the section below and see the concrete example how metarubrics and rubrics work.
+Expand the section below and see the concrete example of how metarubrics and rubrics work.
 
 <details>
 <summary><strong>✅ Metarubrics vs. Rubrics (click to expand)</strong></summary>
