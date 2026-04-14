@@ -187,6 +187,26 @@ def main():
                     else:
                         print(f"✓ Seed reproducibility confirmed")
 
+
+                    # Generate third time with different seed — clears ground_truth_dir
+                    print(f"✓ Generating {task_name} third time to check that different seeds " 
+                          "produce different results")
+                    task.seed = seed + 1
+                    task.generate_task()
+                    task.save_ground_truth()
+
+                    # Compare
+                    with open(gt_path,  'r') as f: gt  = json.load(f)
+                    with open(ref_path, 'r') as f: ref = json.load(f)
+
+                    if gt == ref:
+                        print(f"✗ Validation failed: {task_name} — different seeds produce same results!")
+                        raise ValueError(f"Task is static and doesn't produce different results for different seeds.\n"
+                                         "            Do you use stochastic processes in _generate()?, " \
+                                         "All random generators must use seed self.seed for reproducibility.")
+                    else:
+                        print(f"✓ Stochasticity confirmed")
+
                 finally:
                     # Always clean up tmp file
                     ref_path.unlink(missing_ok=True)
