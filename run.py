@@ -156,20 +156,22 @@ def main():
             task.generate_rubrics()  # generate rubrics based on metarubrics and templates
             
             if args.validate_only:
-                print(f"✓ Seed validation : generating {task_name} twice to check seed reproducibility.")
-
                 # Copy ground truth to system tmp before second generation
                 # (second generate_task() clears ground_truth_dir)
                 gt_path  = task.ground_truth_dir / 'ground_truth.json'
-                ref_fd, ref_path_str = tempfile.mkstemp(suffix='.json', prefix=f'parametr_{task_name}_ref_')
+                ref_fd, ref_path_str = tempfile.mkstemp(suffix='.json', 
+                                                        prefix=f'parametr_{task_name}_ref_')
                 ref_path = Path(ref_path_str)
 
                 try:
                     # Close the file descriptor — shutil.copy will write to it
+                    print(f"✓ Moving ground_truth.json to temporary file {ref_path}")
                     os.close(ref_fd)
                     shutil.copy(gt_path, ref_path)
 
                     # Generate second time with same seed — clears ground_truth_dir
+                    print(f"✓ Generating {task_name} second time to check seed " 
+                          "reproducibility")
                     task.generate_task()
                     task.save_ground_truth()
 
@@ -179,10 +181,11 @@ def main():
 
                     if gt != ref:
                         print(f"✗ Validation failed: {task_name} — ground truth differs between runs with same seed!")
-                        raise ValueError(f"Seed reproducibility check failed for {task_name}\n",
-                                         "      Do all random number generators use self.seed, or seeds deterministically derived from it?")
+                        raise ValueError(f"Seed reproducibility check failed for {task_name}\n"
+                                         "            Do all random number generators use self.seed, " \
+                                         "or seeds deterministically derived from it?")
                     else:
-                        print(f"✓ Seed reproducibility confirmed: {task_name}")
+                        print(f"✓ Seed reproducibility confirmed")
 
                 finally:
                     # Always clean up tmp file
