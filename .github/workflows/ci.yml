@@ -25,3 +25,11 @@ jobs:
       - name: Validate tasks
         run: |
           python run.py --validate-only --difficulty easy --seeds 0
+
+      - name: Validate hidden tasks
+        run: |
+          for task in tasks/_*/; do
+            name=$(basename "$task")
+            echo "Validating $name..."
+            python run.py --task "$name" --validate-only --difficulty easy --seeds 0
+          done
