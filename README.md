@@ -193,7 +193,7 @@ If you are considering contributing task from your domain, refer to [`CONTRIBUTI
 
 # Citation
 
-If you find this work useful or interesting, please consider citing it:
+If you find this work useful or interesting, please consider citing this repo:
 
 ```bibtex
 @misc{theiner2026parametr-bench,
