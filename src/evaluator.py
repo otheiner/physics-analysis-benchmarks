@@ -155,6 +155,10 @@ class Evaluator:
                     temperature = 0.0
                 )
 
+                if not response.choices:
+                    raise RuntimeError(
+                        f"Model {model} returned an empty response (no choices). "
+                    )
                 message = response.choices[0].message
 
                 # No tool calls — model finished analysis, ask for summary
