@@ -92,7 +92,7 @@ Traditional benchmarks rely on fixed test sets that leak into training data, bec
 
 Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
 
-Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
+PARAMETR-Bench offers a possible solution, which is using the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
 
 Since rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits.
 
@@ -105,7 +105,7 @@ PARAMETR-Bench utilizes user-specified seeds to ensure that task generation is r
 
 1) **Minimizing Data Contamination:** Since the evaluation data is generated on the fly and never stored statically in the repository, the risk of it being scraped and contaminating future LLM training sets is significantly reduced.
 2) **Leak Detection:** If evaluation data from specific public seeds were to leak into a model's training set, the model might show inflated performance due to memorization. We can detect this by re-running the benchmark with a fresh set of random seeds. A statistically significant performance gap between public seeds and fresh private seeds would provide a clear indication of a potential data leak — making contamination detectable in principle, unlike static benchmarks where held-out sets differ in content.
-3) **Resilience to Leaks:** If a specific dataset is compromised, the seeds can simply be rotated. Because our framework relies on statistical evaluation across multiple independent seeds, the resulting performance metrics remain comparable and valid even after the seeds are changed.
+3) **Resilience to Leaks:** If a specific dataset is compromised, the seeds can simply be rotated. Because this framework relies on statistical evaluation across multiple independent seeds, the resulting performance metrics remain comparable and valid even after the seeds are changed.
     
 </details>
 
@@ -169,6 +169,7 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
 
 # Results
 
+This project is still in the initial stage and the first results to demonstrate the framework will be added soon.
 
 # How it works
 
