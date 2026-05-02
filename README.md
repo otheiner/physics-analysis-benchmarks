@@ -150,10 +150,11 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
               --difficulty medium \
               --seeds 0 1
 ```
+This sends LLM prompt and all the data in one message and LLM has one shot to return the result.
 
 ## Agentic evaluation
 
-Agentic evaluation enables running python with a few allowed python libraries specified in `sandbox/requirements.txt`. Python is executed in safe Docker sandbox environment without access to the Internet, memory-capped to 512 MB, not allowing writing `.pyc` files. **First of all, run docker daemon on your machine!** Dockerfile for building the sandbox is located in `sandbox` folder. 
+Agentic evaluation enables performing more realistic scientific tasks. Agent gets only the prompt and list of files to work with and it has then the ability to use tools to inspect these files and analyze them by python, which is executed in safe Docker sandbox environment without access to the Internet. **First of all, run docker daemon on your machine!** Description of the sandbox environment and its Dockerfile is located in `sandbox` folder. 
 
 Build the sandbox Docker image and run benchmark using flag `--agentic`:
 

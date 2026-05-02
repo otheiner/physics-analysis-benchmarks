@@ -37,5 +37,95 @@ TOOLS = [
                 "required": ["code"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_command",
+            "description": (
+                "Run a shell command in the workspace for quick data inspection. "
+                "Allowed commands: grep, sed, awk, find, head, tail, cat, wc, sort, uniq, cut, ls, file. "
+                "Supports pipes (|), logical operators (&& / ||), semicolons (;), and regex patterns. "
+                "Paths are relative to the workspace directory."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "command": {
+                        "type": "string",
+                        "description": "Shell command to run, e.g. 'head -5 data.csv' or 'grep pattern file.txt'."
+                    }
+                },
+                "required": ["command"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "write_file",
+            "description": (
+                "Write text content to a file in the workspace. "
+                "Use this to save intermediate results, notes, or small data files. "
+                "Paths are relative to the workspace directory. "
+                "Overwrites the file if it already exists."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Path to the file relative to the workspace."
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Text content to write."
+                    }
+                },
+                "required": ["path", "content"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "read_file",
+            "description": (
+                "Read a text or CSV file from the workspace and return its contents. "
+                "Use this to inspect input data before writing analysis code. "
+                "Paths are relative to the workspace directory."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Path to the file relative to the workspace."
+                    }
+                },
+                "required": ["path"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "view_image",
+            "description": (
+                "Render an image file into your context so you can inspect it. "
+                "Use this to view plots you have saved or input image files. "
+                "Paths are relative to the workspace directory."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Path to the image file relative to the workspace."
+                    }
+                },
+                "required": ["path"]
+            }
+        }
     }
 ]

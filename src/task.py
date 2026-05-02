@@ -546,41 +546,53 @@ class Task(ABC):
     # ─────────────────────────────────────────
     # Loading input files and preparing them for LLM
     # ─────────────────────────────────────────
-    def get_input_files(self, model: str = '') -> list[dict]:
+    def get_input_files(self, model: str = '', embed_data: bool = True) -> list[dict]:
         content = []
-        
+
         for filepath in sorted(self.input_dir.rglob('*')):
             if not filepath.is_file():
                 continue
-            
+
             relative  = filepath.relative_to(self.input_dir)
             mime_type, _ = mimetypes.guess_type(str(filepath))
-            
+
             # CSV / TXT / MD
             if filepath.suffix in ['.csv', '.txt', '.md']:
-                content.append({
-                    'type': 'text',
-                    'text': f'File: {relative}\n{filepath.read_text()}'
-                })
-            
+                if embed_data:
+                    content.append({
+                        'type': 'text',
+                        'text': f'File: {relative}\n{filepath.read_text()}'
+                    })
+                else:
+                    content.append({
+                        'type': 'text',
+                        'text': f'File: {relative}'
+                    })
+
             # Images
             elif mime_type and mime_type.startswith('image/'):
-                data = base64.b64encode(filepath.read_bytes()).decode()
-                content.append({
-                    'type': 'text',
-                    'text': f'Image file: {relative}'
-                })
-                content.append({
-                    'type':      'image_url',
-                    'image_url': {'url': f'data:{mime_type};base64,{data}'}
-                })
-            
+                if embed_data:
+                    data = base64.b64encode(filepath.read_bytes()).decode()
+                    content.append({
+                        'type': 'text',
+                        'text': f'Image file: {relative}'
+                    })
+                    content.append({
+                        'type':      'image_url',
+                        'image_url': {'url': f'data:{mime_type};base64,{data}'}
+                    })
+                else:
+                    content.append({
+                        'type': 'text',
+                        'text': f'Image file: {relative}'
+                    })
+
             else:
                 content.append({
                     'type': 'text',
                     'text': f'[Skipped: {relative} — unsupported type]'
                 })
-        
+
         return content
     
 
