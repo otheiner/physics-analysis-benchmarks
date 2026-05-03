@@ -8,7 +8,7 @@ The exact detector geometry with visualisation of the coordinate system is dispa
 
 Provided data contain information from the tracking detector and calorimeter from events with $e^+e^-$ pair coming from the common vertex located exactly at the origin (0, 0, 0). These events were selected such that both electron and positron left hit (signal deposit) in every tracking layer and energy deposit in the calorimeter layer. These event's were cleaned from hits comming from other particles, so it is possible to assume that each of the hits in these events can be attributed to the electron or positron decying from the parent particle. It can be assumed that the measurements from tracker and calorimeter have absolute precision.
 
-Assume that you know that some electron-positron pairs come from the new unknown particle, while the rest comes from the exponentially decying background. Estimate mass $M$ and decay width $\Gamma$ of the particle in $\mathrm{GeV/c^2}$.
+Assume that you know that some electron-positron pairs come from the new unknown particle, while the rest comes from the exponentially decying background. Estimate mass $M$ and decay width $\Gamma$ of the particle in $\mathrm{GeV/c^2}$ given the provided data.
 
 ________________________________________
 ## Output format
