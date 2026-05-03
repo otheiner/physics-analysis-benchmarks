@@ -120,7 +120,7 @@ Clone repo and install dependencies:
 ```bash
 git clone https://github.com/otheiner/PARAMETR-Bench.git
 cd PARAMETR-Bench
-pip install -r requirements.txt
+pip install .
 ```
 
 Validate task generation without API calls and inspect generated data locally:
