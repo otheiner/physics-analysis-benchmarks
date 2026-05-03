@@ -104,8 +104,10 @@ Since rubric criteria contain specific numerical values drawn from the simulatio
 PARAMETR-Bench utilizes user-specified seeds to ensure that task generation is randomized yet fully reproducible. While the repository itself contains no raw data, the specific set of seeds serves as a precise "recipe" for reconstructing the evaluation dataset. This approach is advantageous for several reasons:
 
 1) **Minimizing Data Contamination:** Since the evaluation data is generated on the fly and never stored statically in the repository, the risk of it being scraped and contaminating future LLM training sets is significantly reduced.
-2) **Leak Detection:** If evaluation data from specific public seeds were to leak into a model's training set, the model might show inflated performance due to memorization. We can detect this by re-running the benchmark with a fresh set of random seeds. A statistically significant performance gap between public seeds and fresh private seeds would provide a clear indication of a potential data leak — making contamination detectable in principle, unlike static benchmarks where held-out sets differ in content.
-3) **Resilience to Leaks:** If a specific dataset is compromised, the seeds can simply be rotated. Because this framework relies on statistical evaluation across multiple independent seeds, the resulting performance metrics remain comparable and valid even after the seeds are changed.
+2) **Leak Detection:** If evaluation data from specific public seeds were to leak into a model's training set, the model might show inflated performance due to memorization. We could detect this in principle[^1] by re-running the benchmark with a fresh set of random seeds. A statistically significant performance gap between public seeds and fresh private seeds would provide a clear indication of a potential data leak — making contamination detectable in principle, unlike static benchmarks where held-out sets differ in content.
+3) **Resilience to Leaks:** If a specific dataset is compromised, the seeds can simply be rotated. Because our framework relies on statistical evaluation across multiple independent seeds, the resulting performance metrics remain comparable and valid even after the seeds are changed.
+
+[^1]: This is currently only a proposal and hasn't been verified experimentally yet.
     
 </details>
 
