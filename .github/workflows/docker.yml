@@ -32,7 +32,7 @@ jobs:
       - name: Trigger HF Space rebuild
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_SPACE: otheiner/PARAMETR-Bench-Demo
+          HF_SPACE: otheiner/PARAMETR-Bench_demo
         run: |
           git clone https://user:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE /tmp/hf-space
           cd /tmp/hf-space
