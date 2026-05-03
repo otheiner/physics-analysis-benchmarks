@@ -248,10 +248,10 @@ class InvariantMassReconstruction(Task):
         return s
     
     # ---------------------------------------------------------------------------
-    # Detector geometry diagram (input specification image).
+    # Detector geometry in transverse plane (input specification image).
     # ---------------------------------------------------------------------------
     @staticmethod
-    def plot_detector_geometry(layer_radii, ecal_radius, layer_names):
+    def plot_detector_transverse(layer_radii, ecal_radius, layer_names):
         """Transverse (x-y) cross-section showing detector geometry only —
         no hits. Used as an input specification image so the model knows the
         layer structure and radii before analysing the data.
@@ -285,6 +285,63 @@ class InvariantMassReconstruction(Task):
         ax.set_xlabel('x [m]')
         ax.set_ylabel('y [m]')
         ax.set_title('Detector transverse cross-section')
+        ax.legend(handles=legend_handles, bbox_to_anchor=(1.02, 1), loc='upper left',
+                  fontsize=8, framealpha=0.9, title='Detector layers', borderaxespad=0)
+        fig.tight_layout()
+        return fig
+
+    # ---------------------------------------------------------------------------
+    # Detector longitudinal cross-section (r-z plane).
+    # ---------------------------------------------------------------------------
+    @staticmethod
+    def plot_detector_longitudinal(layer_radii, ecal_radius, layer_names, eta_max):
+        """Longitudinal (r-z) cross-section of the detector barrel.
+        Each layer is drawn as a horizontal line from -z_max to +z_max,
+        where z_max = r * sinh(eta_max). Eta acceptance lines are shown
+        as dashed guides from the origin.
+        """
+        tracker_colors = plt.cm.tab10(np.arange(len(layer_radii)))
+        sinh_eta = np.sinh(eta_max)
+
+        fig, ax = plt.subplots(figsize=(11, 4))
+
+        legend_handles = []
+        for r, name, color in zip(layer_radii, layer_names, tracker_colors):
+            z_max = r * sinh_eta
+            ax.plot([-z_max, z_max], [r, r], color=color, linewidth=1.8, linestyle='--')
+            ax.text(0, r + 0.015, f'2z = {2*z_max:.2f} m',
+                    fontsize=7, color=color, va='bottom', ha='center')
+            legend_handles.append(plt.Line2D([], [], color=color, linewidth=1.8,
+                                             linestyle='--', label=f'{name}  :  r = {r:.3f} m'))
+
+        z_max_ecal = ecal_radius * sinh_eta
+        ax.plot([-z_max_ecal, z_max_ecal], [ecal_radius, ecal_radius],
+                color='firebrick', linewidth=2.5)
+        ax.text(0, ecal_radius + 0.015, f'2z = {2*z_max_ecal:.1f} m',
+                fontsize=7, color='firebrick', va='bottom', ha='center')
+        legend_handles.append(plt.Line2D([], [], color='firebrick', linewidth=2.5,
+                                          label=f'ECAL  :  r = {ecal_radius:.3f} m'))
+
+        # Eta acceptance lines from origin.
+        r_edge = ecal_radius * 1.05
+        z_edge = r_edge * sinh_eta
+        for sign in (1, -1):
+            ax.plot([0, sign * z_edge], [0, r_edge], 'k--', linewidth=0.8, alpha=0.4)
+        ax.text(z_edge * 0.5, r_edge * 0.5, f'η = {eta_max}', fontsize=7, alpha=0.6,
+                va='bottom', bbox=dict(facecolor='white', edgecolor='none', pad=1.5))
+        ax.text(-z_edge * 0.5, r_edge * 0.5, f'η = −{eta_max}', fontsize=7, alpha=0.6,
+                ha='right', va='bottom', bbox=dict(facecolor='white', edgecolor='none', pad=1.5))
+
+        ax.plot(0, 0, 'k+', markersize=10, markeredgewidth=1.5)
+        legend_handles.append(plt.Line2D([], [], marker='+', color='black', linestyle='None',
+                                          markersize=10, markeredgewidth=1.5,
+                                          label='vertex / origin'))
+
+        ax.set_xlabel('z [m]')
+        ax.set_ylabel('r [m]')
+        ax.set_ylim(-0.05, ecal_radius * 1.25)
+        ax.set_xlim(-(z_max_ecal + 0.5), z_max_ecal + 0.5)
+        ax.set_title('Detector longitudinal cross-section (r–z plane)')
         ax.legend(handles=legend_handles, bbox_to_anchor=(1.02, 1), loc='upper left',
                   fontsize=8, framealpha=0.9, title='Detector layers', borderaxespad=0)
         fig.tight_layout()
@@ -473,8 +530,12 @@ class InvariantMassReconstruction(Task):
         df_ecal_input.to_csv(self.input_dir / 'ecal_hits.csv', index=False)
 
         # Generate input image with detector geometry
-        fig = self.plot_detector_geometry(LAYER_RADII, ECAL_RADIUS, layer_names)
-        fig.savefig(self.input_dir / 'detector_geometry.png', dpi=150)
+        fig = self.plot_detector_transverse(LAYER_RADII, ECAL_RADIUS, layer_names)
+        fig.savefig(self.input_dir / 'detector_transverse.png', dpi=150)
+        plt.close(fig)
+
+        fig = self.plot_detector_longitudinal(LAYER_RADII, ECAL_RADIUS, layer_names, ETA_MAX)
+        fig.savefig(self.input_dir / 'detector_longitudinal.png', dpi=150)
         plt.close(fig)
 
         # Mass spectrum histogram saved to ground truth for human reference.

@@ -29,7 +29,7 @@
         "M_SIG_MIN": 25,
         "M_SIG_MAX": 65,
         "PT_SCALE": 10.0,
-        "ETA_MAX": 2.5,
+        "ETA_MAX": 3.0,
         "DAUGHTER_MASS": 0.000511,
         "B_FIELD": 1.0,
         "LAYER_RADII": [0.05, 0.15, 0.30, 0.55],
