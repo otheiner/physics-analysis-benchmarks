@@ -92,7 +92,7 @@ Traditional benchmarks rely on fixed test sets that leak into training data, bec
 
 Procedural generation solves leakage by creating fresh instances every run. But it introduces a new problem: keeping rubrics aligned with dynamically generated data, especially in multi-step scientific tasks.
 
-Our solution is to use the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
+PARAMETR-Bench offers a possible solution, which is using the same generating process that creates the task data to also instantiate the rubrics. We call these templates metarubrics. Every rubric criterion is mathematically guaranteed to match the generated instance  by construction, not by validation. Templating allows us also automatically generate variable number of atomic rubric criteria for repeated data extraction, which is common in scientific data analyses.
 
 Since rubric criteria contain specific numerical values drawn from the simulation, they cannot be gamed by memorising fixed evaluation criteria. A model must solve each instance on its own merits.
 
@@ -122,7 +122,7 @@ Clone repo and install dependencies:
 ```bash
 git clone https://github.com/otheiner/PARAMETR-Bench.git
 cd PARAMETR-Bench
-pip install -r requirements.txt
+pip install .
 ```
 
 Validate task generation without API calls and inspect generated data locally:
@@ -152,10 +152,11 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
               --difficulty medium \
               --seeds 0 1
 ```
+This sends LLM prompt and all the data in one message and LLM has one shot to return the result.
 
 ## Agentic evaluation
 
-Agentic evaluation enables running python with a few allowed python libraries specified in `sandbox/requirements.txt`. Python is executed in safe Docker sandbox environment without access to the Internet, memory-capped to 512 MB, not allowing writing `.pyc` files. **First of all, run docker daemon on your machine!** Dockerfile for building the sandbox is located in `sandbox` folder. 
+Agentic evaluation enables performing more realistic scientific tasks. Agent gets only the prompt and list of files to work with and it has then the ability to use tools to inspect these files and analyze them by python, which is executed in safe Docker sandbox environment without access to the Internet. **First of all, run docker daemon on your machine!** Description of the sandbox environment and its Dockerfile is located in `sandbox` folder. 
 
 Build the sandbox Docker image and run benchmark using flag `--agentic`:
 
@@ -171,6 +172,7 @@ python run.py --models gemini/gemini-3.1-flash-lite-preview \
 
 # Results
 
+This project is still in the initial stage and the first results to demonstrate the framework will be added soon.
 
 # How it works
 

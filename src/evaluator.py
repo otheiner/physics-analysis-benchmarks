@@ -76,11 +76,20 @@ class Evaluator:
     # ─────────────────────────────────────────
     # Load agentic prompt
     # ─────────────────────────────────────────
-    def load_agentic_prompt(self, max_turns: int) -> str:
+    def load_agentic_prompt(self, max_turns: int, vision: bool = True) -> str:
         """Load agentic prompt addition and fill in available libraries."""
         template = (Path(__file__).parent / 'agentic_prompt.md').read_text()
-        return template.format(libraries=_load_sandbox_libraries(),
-                            max_turns = max_turns)
+        view_image_note = ", and `view_image` to inspect image files" if vision else ""
+        view_image_tool = (
+            "- **view_image** — render an image file into your context so you can inspect it visually\n"
+            if vision else ""
+        )
+        return template.format(
+            libraries       = _load_sandbox_libraries(),
+            max_turns       = max_turns,
+            view_image_tool = view_image_tool,
+            view_image_note = view_image_note,
+        )
 
     # ─────────────────────────────────────────
     # Send to model
@@ -137,13 +146,24 @@ class Evaluator:
             # Copy input files once into session workspace
             shutil.copytree(task.input_dir, session_dir, dirs_exist_ok=True)
 
+            # Providers that support multimodal content in tool result messages.
+            # litellm.supports_vision() only checks the model, not whether the
+            # provider accepts image blocks in tool results — Groq e.g. does not.
+            _VISION_TOOL_PROVIDERS = {'anthropic', 'openai', 'azure', 'gemini', 'vertex_ai', 'bedrock', 'ollama'}
+            try:
+                _, provider, _, _ = litellm.get_llm_provider(model)
+            except Exception:
+                provider = ''
+            vision   = provider in _VISION_TOOL_PROVIDERS and litellm.supports_vision(model=model)
+            tools    = TOOLS if vision else [t for t in TOOLS if t['function']['name'] != 'view_image']
+
             # Include input files in the first message
             messages = [{
                 'role':    'user',
                 'content': [
-                    {'type': 'text', 
-                     'text': task.get_prompt() + self.load_agentic_prompt(max_turns)},
-                            *task.get_input_files(model)
+                    {'type': 'text',
+                     'text': task.get_prompt() + self.load_agentic_prompt(max_turns, vision)},
+                            *task.get_input_files(model, embed_data=False)
                 ]
             }]
 
@@ -151,10 +171,14 @@ class Evaluator:
                 response = self._litellm_completion_with_retry(
                     model       = model,
                     messages    = messages,
-                    tools       = TOOLS,
+                    tools       = tools,
                     temperature = 0.0
                 )
 
+                if not response.choices:
+                    raise RuntimeError(
+                        f"Model {model} returned an empty response (no choices). "
+                    )
                 message = response.choices[0].message
 
                 # No tool calls — model finished analysis, ask for summary
@@ -193,28 +217,92 @@ class Evaluator:
                 # Append assistant turn to history
                 messages.append(message.model_dump())
 
-                # Execute each tool call
                 for tool_call in message.tool_calls:
-                    code   = json.loads(tool_call.function.arguments)['code']
-                    output = self._execute_python(code, task, session_dir)
+                    name = tool_call.function.name
+                    args = json.loads(tool_call.function.arguments)
 
                     print(f"\n{'-' * 50}")
-                    print(f"TOOL CALL (turn {turn + 1}):")
+                    print(f"TOOL CALL {name!r} (turn {turn + 1}):")
                     print(f"\n{'-' * 50}")
-                    print(code)
-                    print(f"OUTPUT:")
-                    print(output)
 
-                    # Truncate long outputs to avoid context explosion
-                    if len(output) > 5000:
-                        output = output[:5000] + "\n...(truncated)"
+                    if name == 'execute_python':
+                        output = self._execute_python(args['code'], session_dir)
+                        print(args['code'])
+                        print(f"OUTPUT:")
+                        print(output)
 
-                    messages.append({
-                        'role':         'tool',
-                        'tool_call_id': tool_call.id,
-                        'name':         'execute_python',
-                        'content':      output
-                    })
+                        if len(output) > 5000:
+                            output = output[:5000] + "\n...(truncated)"
+
+                        messages.append({
+                            'role':         'tool',
+                            'tool_call_id': tool_call.id,
+                            'name':         'execute_python',
+                            'content':      output
+                        })
+
+                    elif name == 'run_command':
+                        command = args['command']
+                        print(f"command: {command}")
+                        content = self._run_command(command, session_dir)
+                        print(content)
+                        messages.append({
+                            'role':         'tool',
+                            'tool_call_id': tool_call.id,
+                            'name':         'run_command',
+                            'content':      content
+                        })
+
+                    elif name == 'write_file':
+                        path, content = args['path'], args['content']
+                        print(f"path: {path}")
+                        result = self._write_file(path, content, session_dir)
+                        print(result)
+                        messages.append({
+                            'role':         'tool',
+                            'tool_call_id': tool_call.id,
+                            'name':         'write_file',
+                            'content':      result
+                        })
+
+                    elif name == 'read_file':
+                        path = args['path']
+                        print(f"path: {path}")
+                        content = self._read_file(path, session_dir)
+                        print(content)
+                        messages.append({
+                            'role':         'tool',
+                            'tool_call_id': tool_call.id,
+                            'name':         'read_file',
+                            'content':      content
+                        })
+
+                    elif name == 'view_image':
+                        path = args['path']
+                        print(f"path: {path}")
+                        content = self._view_image(path, session_dir)
+                        messages.append({
+                            'role':         'tool',
+                            'tool_call_id': tool_call.id,
+                            'name':         'view_image',
+                            'content':      content
+                        })
+
+                    else:
+                        print(f"WARNING: unknown tool '{name}' — returning error to model")
+                        messages.append({
+                            'role':         'tool',
+                            'tool_call_id': tool_call.id,
+                            'name':         name,
+                            'content':      f"Error: unknown tool '{name}'."
+                        })
+
+                # Inform the model of remaining turns after each tool-call round
+                remaining = max_turns - turn - 1
+                messages.append({
+                    'role':    'user',
+                    'content': f"[Turn {turn + 1}/{max_turns} used. {remaining} turn{'s' if remaining != 1 else ''} remaining.]"
+                })
 
             # Max turns reached — ask for summary of what was found
             messages.append({
@@ -370,10 +458,126 @@ class Evaluator:
             return 0
 
     # ─────────────────────────────────────────
+    # Run shell command in Docker sandbox
+    # ─────────────────────────────────────────
+    _ALLOWED_COMMANDS = {
+        'grep', 'sed', 'awk', 'find', 'head', 'tail',
+        'cat', 'wc', 'sort', 'uniq', 'cut', 'ls', 'file',
+        'mkdir', 'touch', 'cp', 'cd',
+    }
+
+    def _run_command(self, command: str, session_dir: Path, max_chars: int = 5_000) -> str:
+        # Validate every command segment (split on ||, &&, |, ;)
+        for segment in re.split(r'\|\||&&|[|;]', command):
+            tokens = segment.strip().split()
+            if not tokens:
+                continue
+            if tokens[0] not in self._ALLOWED_COMMANDS:
+                allowed = ', '.join(sorted(self._ALLOWED_COMMANDS))
+                return f"Error: '{tokens[0]}' is not allowed. Allowed commands: {allowed}."
+
+        # Check Docker daemon is running before attempting anything
+        try:
+            client = docker.from_env()
+            client.ping()
+        except docker.errors.DockerException:
+            raise RuntimeError(
+                "⚠  Docker daemon is not running. "
+                "Start Docker Desktop and try again."
+            )
+
+        # Use persistent session_dir
+        tmpdir  = session_dir
+        mode    = 'rw'      # read-write — agent can save files
+        cleanup = False     # session_dir managed by caller
+
+        try:
+            output = client.containers.run(
+                image         = 'benchmark-sandbox',
+                command       = ['sh', '-c', command],
+                working_dir   = '/home/agent/workspace',
+                user          = 'agent',
+                network_mode  = 'none',
+                mem_limit     = '512m',
+                memswap_limit = '512m',
+                cpu_quota     = 50000,
+                pids_limit    = 64,
+                volumes       = {
+                    str(tmpdir): {
+                        'bind': '/home/agent/workspace',
+                        'mode': mode
+                    }
+                },
+                tmpfs         = {'/tmp': ''},
+                detach        = False,
+                stdout        = True,
+                stderr        = True,
+                remove        = True,
+            )
+
+            result = output.decode() if output else "(no output)"
+
+        except docker.errors.ContainerError as e:
+            result = e.stderr.decode() if e.stderr else str(e)
+
+        except Exception as e:
+            result = f"Execution error: {e}"
+
+        finally:
+            if cleanup:
+                shutil.rmtree(tmpdir, ignore_errors=True)
+
+        if len(result) > max_chars:
+            result = result[:max_chars] + f"\n...(truncated at {max_chars} chars)"
+        return result
+
+    # ─────────────────────────────────────────
+    # Write text file on agents request
+    # ─────────────────────────────────────────
+    def _write_file(self, path: str, content: str, session_dir: Path) -> str:
+        file_path = session_dir / path
+        try:
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            file_path.write_text(content)
+            return f"Written {len(content)} chars to '{path}'."
+        except Exception as e:
+            return f"Error writing '{path}': {e}"
+
+    # ─────────────────────────────────────────
+    # Read text/csv file on agents request
+    # ─────────────────────────────────────────
+    def _read_file(self, path: str, session_dir: Path, max_chars: int = 10_000) -> str:
+        file_path = session_dir / path
+        if not file_path.exists():
+            return f"Error: '{path}' not found in workspace."
+        try:
+            content = file_path.read_text()
+        except Exception as e:
+            return f"Error reading '{path}': {e}"
+        if len(content) > max_chars:
+            content = content[:max_chars] + f"\n...(truncated at {max_chars} chars)"
+        return content
+
+    # View image on agents request
+    # ─────────────────────────────────────────
+    def _view_image(self, path: str, session_dir: Path):
+        import base64, mimetypes
+        image_path = session_dir / path
+        if not image_path.exists():
+            return f"Error: '{path}' not found in workspace."
+        mime_type, _ = mimetypes.guess_type(str(image_path))
+        if mime_type not in ('image/png', 'image/jpeg', 'image/gif', 'image/webp'):
+            return f"Error: '{path}' is not a supported image type (png/jpeg/gif/webp)."
+        data = base64.standard_b64encode(image_path.read_bytes()).decode()
+        return [
+            {'type': 'text',      'text': f"Image '{path}':"},
+            {'type': 'image_url', 'image_url': {'url': f'data:{mime_type};base64,{data}'}}
+        ]
+
+    # ─────────────────────────────────────────
     # Execute Python in Docker container sandbox
     # ─────────────────────────────────────────
-    def _execute_python(self, code: str, task: Task,
-                    session_dir: Path) -> str:
+    def _execute_python(self, code: str, session_dir: Path) -> str:
         """
         Execute model-generated Python code in an isolated Docker container.
         If session_dir is provided, it is mounted as read-write workspace

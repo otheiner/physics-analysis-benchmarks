@@ -1,0 +1,40 @@
+{
+    "task_name": "invariant_mass_reconstruction",
+
+    "difficulties": {
+        "easy": {
+            "N_EVENTS": 200,
+            "SIGNAL_FRACTION": 0.5,
+            "MEAN_LAMBDA_BKG_DECAY": 0.3,
+            "LAYER_RADII": [0.05, 0.55],
+            "MEAN_GAMMA_SIGNAL" : 10
+
+        },
+        "medium": {
+            "N_EVENTS": 1000,
+            "SIGNAL_FRACTION": 0.2,
+            "MEAN_LAMBDA_BKG_DECAY": 0.1,
+            "LAYER_RADII": [0.05, 0.30, 0.60],
+            "MEAN_GAMMA_SIGNAL" : 3
+        },
+        "hard": {
+            "N_EVENTS": 10000,
+            "SIGNAL_FRACTION": 0.05,
+            "MEAN_LAMBDA_BKG_DECAY": 0.05,
+            "LAYER_RADII": [0.05, 0.15, 0.30, 0.55],
+            "MEAN_GAMMA_SIGNAL" : 1
+        }
+    },
+
+    "fixed_parameters": {
+        "M_MIN": 10,
+        "M_MAX": 80,
+        "M_SIG_MIN": 25,
+        "M_SIG_MAX": 65,
+        "PT_SCALE": 10.0,
+        "ETA_MAX": 3.0,
+        "DAUGHTER_MASS": 0.000511,
+        "B_FIELD": 1.0,
+        "ECAL_RADIUS": 1.5
+    }
+}
