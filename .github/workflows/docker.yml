@@ -1,0 +1,44 @@
+name: Publish Docker image
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/parametr-bench:latest
+
+      - name: Trigger HF Space rebuild
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: otheiner/PARAMETR-Bench-Demo
+        run: |
+          git clone https://user:$HF_TOKEN@huggingface.co/spaces/$HF_SPACE /tmp/hf-space
+          cd /tmp/hf-space
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+          echo "${{ github.sha }}" > LAST_BUILD
+          git add LAST_BUILD
+          git commit -m "Rebuild: ${{ github.sha }}"
+          git push
