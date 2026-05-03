@@ -22,19 +22,19 @@ ________________________________________
 
 Structure your response exactly as follows:
 
-<final_result> 
+[final_result] 
 -------DATA FOR QUALITY ASSURANCE-------
 SUPPLY_ID      MACHINE      BATCH      FREQUENCY
-<supply_ID1>  <machine>    <batch>     <frequency>
-<supply_ID2>  <machine>    <batch>     <frequency>
+[supply_ID1]  [machine]    [batch]     [frequency]
+[supply_ID2]  [machine]    [batch]     [frequency]
 ...
 
 ------DATA FOR MANAGEMENT------
 MACHINES(failure > 10%)
-<machine1>
-<machine2>
+[machine1]
+[machine2]
 ...
-</final_result> 
+[/final_result] 
 
 ________________________________________
 ## Files provided

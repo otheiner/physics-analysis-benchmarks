@@ -10,17 +10,17 @@ ________________________________________
 
 ## Output format
 
-Enclose your final results into formatting tags <final_result> </final_result> and structure your response exactly as follows:
+Enclose your final results into formatting tags [final_result] [/final_result] and structure your response exactly as follows:
 
-<final_result> 
+[final_result] 
 CIRCLE COUNTS:
-1.png: <count>
-2.png: <count>
+1.png: [count]
+2.png: [count]
 ...
 
 AVERAGE:
-<your computed average>
-</final_result>
+[your computed average]
+[/final_result]
 
 ________________________________________
 
