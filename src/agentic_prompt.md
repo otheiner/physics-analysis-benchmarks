@@ -10,7 +10,7 @@ You have available these tools:
 - **write_file** — write text content to a file in the workspace
 {view_image_tool}- **execute_python** — execute a Python script; stdout is returned to you
 
-All input files are listed above by name and are available in your working directory — their contents are not pre-loaded. Use `read_file` or `run_command` to inspect text and CSV files{view_image_note}. Files written by `execute_python` or `write_file` persist between tool calls, but the working directory always resets to the workspace root — `cd` changes do not carry over between calls. Use explicit paths or chain `cd` within a single call (e.g. `cd subdir && head file.csv`).
+All input files are listed above by name and are available in your working directory — their contents are not pre-loaded. Use `read_file` or `run_command` to inspect text and CSV files{view_image_note}. Files written by `execute_python` or `write_file` persist between tool calls, but the working directory always resets to the workspace root — `cd` changes do not carry over between calls. Use explicit paths or chain `cd` within a single call (e.g. `cd subdir && head file.csv`). You can use these tools to also inspect the files you created. 
 
 Each `execute_python` call runs in a fresh Python process — no variables or imports persist between calls; every script must be self-contained. Available libraries: {libraries}. Do NOT use any libraries outside this list.
 

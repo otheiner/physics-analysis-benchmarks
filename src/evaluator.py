@@ -297,6 +297,12 @@ class Evaluator:
                             'content':      f"Error: unknown tool '{name}'."
                         })
 
+                # Inform the model of remaining turns after each tool-call round
+                remaining = max_turns - turn - 1
+                messages.append({
+                    'role':    'user',
+                    'content': f"[Turn {turn + 1}/{max_turns} used. {remaining} turn{'s' if remaining != 1 else ''} remaining.]"
+                })
 
             # Max turns reached — ask for summary of what was found
             messages.append({
