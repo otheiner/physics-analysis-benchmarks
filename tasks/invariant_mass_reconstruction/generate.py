@@ -248,6 +248,49 @@ class InvariantMassReconstruction(Task):
         return s
     
     # ---------------------------------------------------------------------------
+    # Detector geometry diagram (input specification image).
+    # ---------------------------------------------------------------------------
+    @staticmethod
+    def plot_detector_geometry(layer_radii, ecal_radius, layer_names):
+        """Transverse (x-y) cross-section showing detector geometry only —
+        no hits. Used as an input specification image so the model knows the
+        layer structure and radii before analysing the data.
+        """
+        tracker_colors = plt.cm.tab10(np.arange(len(layer_radii)))
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+
+        legend_handles = []
+        for r, name, color in zip(layer_radii, layer_names, tracker_colors):
+            ax.add_patch(plt.Circle((0, 0), r, fill=False, color=color,
+                                    linewidth=1.8, linestyle='--'))
+            handle = plt.Line2D([], [], color=color, linewidth=1.8, linestyle='--',
+                                label=f'{name}  :  r = {r:.3f} m')
+            legend_handles.append(handle)
+
+        ax.add_patch(plt.Circle((0, 0), ecal_radius, fill=False,
+                                 color='firebrick', linewidth=2.5))
+        legend_handles.append(plt.Line2D([], [], color='firebrick', linewidth=2.5,
+                                          label=f'ECAL  —  r = {ecal_radius:.3f} m'))
+
+        legend_handles.append(plt.Line2D([], [], marker='+', color='black',
+                                          linestyle='None', markersize=10,
+                                          markeredgewidth=1.5, label='vertex / origin'))
+        ax.plot(0, 0, 'k+', markersize=10, markeredgewidth=1.5)
+
+        lim = ecal_radius * 1.2
+        ax.set_xlim(-lim, lim)
+        ax.set_ylim(-lim, lim)
+        ax.set_aspect('equal')
+        ax.set_xlabel('x [m]')
+        ax.set_ylabel('y [m]')
+        ax.set_title('Detector transverse cross-section')
+        ax.legend(handles=legend_handles, bbox_to_anchor=(1.02, 1), loc='upper left',
+                  fontsize=8, framealpha=0.9, title='Detector layers', borderaxespad=0)
+        fig.tight_layout()
+        return fig
+
+    # ---------------------------------------------------------------------------
     # Assemble ground-truth DataFrames.
     # ---------------------------------------------------------------------------
     def assemble_dataframes(
@@ -428,6 +471,11 @@ class InvariantMassReconstruction(Task):
 
         df_tracker_input.to_csv(self.input_dir / 'tracker_hits.csv', index=False)
         df_ecal_input.to_csv(self.input_dir / 'ecal_hits.csv', index=False)
+
+        # Generate input image with detector geometry
+        fig = self.plot_detector_geometry(LAYER_RADII, ECAL_RADIUS, layer_names)
+        fig.savefig(self.input_dir / 'detector_geometry.png', dpi=150)
+        plt.close(fig)
 
         # Mass spectrum histogram saved to ground truth for human reference.
         bins = np.linspace(M_MIN, M_MAX, 80)
