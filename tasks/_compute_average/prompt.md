@@ -8,17 +8,17 @@ The provided file contains numbers. You must:
 _______________________________________
 ## Output format
 
-Enclose your final results into formatting tags <final_result> </final_result> and structure your response exactly as follows:
+Enclose your final results into formatting tags [final_result] [/final_result] and structure your response exactly as follows:
 
-<final_result> 
+[final_result] 
 NUMBERS FOUND:
-<number 1>
-<number 2>
+[number 1]
+[number 2]
 ...
 
 AVERAGE:
-<your computed average>
-</final_result>
+[your computed average]
+[/final_result]
 ________________________________________
 
 ## Files provided

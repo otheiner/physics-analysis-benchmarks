@@ -21,15 +21,15 @@ Structure your response exactly as follows:
 
 ---ESTIMATED REDSHIFTS---
 CEPHEID_ID          REDSHIFT
-<ID1>                 <z1>
-<ID2>                 <z2>
+[ID1]                 [z1]
+[ID2]                 [z2]
 .....
 
 PARAMETER a:
-<a_value> ± <stdev_a>
+[a_value] ± [stdev_a]
 
 PARAMETER b:
-<b_value> ± <stdev_b>
+[b_value] ± [stdev_b]
 
 ________________________________________
 ## Files provided

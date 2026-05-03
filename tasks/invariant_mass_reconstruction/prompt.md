@@ -15,12 +15,12 @@ ________________________________________
 
 Structure your response exactly as follows:
 
-<INTERMEDIATE_RESULTS>:
-<result1>
-<result2>
+[INTERMEDIATE_RESULTS]:
+[result1]
+[result2]
 
-<FINAL_RESULT>:
-<final_result>
+[FINAL_RESULT]:
+[final_result]
 
 ________________________________________
 ## Files provided

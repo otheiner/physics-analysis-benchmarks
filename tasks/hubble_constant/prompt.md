@@ -12,22 +12,22 @@ State the result in km/s/Mpc rounded to one decimal place ± absolute statistica
 ________________________________________
 ## Output format
 
-Enclose your final results into formatting tags <final_result> </final_result> and structure your response exactly as follows:
+Enclose your final results into formatting tags [final_result] [/final_result] and structure your response exactly as follows:
 
-<final_result> 
+[final_result] 
 REDSHIFTS OF GALAXIES USED IN THE ANALYSIS:
-<GID...>    <redshift value>
-<GID...>    <redshift value>
+[GID...]    [redshift value]
+[GID...]    [redshift value]
 
 HUBBLE CONSTANT ± STDEV:
-<H_0> ± <STDEV> km/s/Mpc
-</final_result>
+[H_0] ± [STDEV] km/s/Mpc
+[/final_result]
 
 ________________________________________
 ## Files provided
 
 Files provided to solve the task are:
 
-- `<cepheids_measurements.csv>` — database of measured Cepheids
-- `<spectral_lines_lab.png>` — laboratory emission spectrum
+- `[cepheids_measurements.csv]` — database of measured Cepheids
+- `[spectral_lines_lab.png]` — laboratory emission spectrum
 - `<observed_spectra/>` — folder containing observed emission spectra of some galaxies
