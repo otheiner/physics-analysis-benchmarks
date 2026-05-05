@@ -1,5 +1,5 @@
-![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/otheiner/PARAMETR-Bench/main/pyproject.toml&style=for-the-badge&logo=python&logoColor=ffdd54)
 ![LiteLLM](https://img.shields.io/badge/LiteLLM-blueviolet?style=for-the-badge)
+![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/otheiner/PARAMETR-Bench/main/pyproject.toml&style=for-the-badge&logo=python&logoColor=ffdd54)
 [![CI](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
 
 # 📊 PARAMETR-Bench  
