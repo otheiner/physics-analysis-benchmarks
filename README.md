@@ -6,11 +6,17 @@
 
 **P**rocedural **A**nd **R**igorous **A**ssessment using **MET**a**R**ubrics: A framework for building contamination-free scientific benchmarks for agentic LLM evaluation with deterministically generated rubrics.
 
-<center>
-
-[![Try it on HF Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-md.svg)](https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo)
-
-</center>
+<p align="center">
+  <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo">
+    <img src="https://img.shields.io/badge/🤗_Try_the_demo-FFD21E?style=for-the-badge" alt="Try the demo"/>
+  </a>
+  <a href="YOUR_BLOG_POST_URL_WHEN_READY">
+    <img src="https://img.shields.io/badge/📖_Read_the_post-444444?style=for-the-badge" alt="Read the blog post"/>
+  </a>
+  <a href="https://github.com/otheiner/PARAMETR-Bench#-parametr-bench">
+    <img src="https://img.shields.io/badge/⚙️_See_the_code-24292F?style=for-the-badge" alt="See the code"/>
+  </a>
+</p>
 
 ## What is this?
 
