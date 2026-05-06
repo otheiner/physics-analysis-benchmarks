@@ -7,7 +7,35 @@
 **P**rocedural **A**nd **R**igorous **A**ssessment using **MET**a**R**ubrics: A framework for building contamination-free scientific benchmarks for agentic LLM evaluation with deterministically generated rubrics.
 
 <p align="center">
-  <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo"><img src="https://img.shields.io/badge/🤗_Try_the_demo-FFD21E?style=for-the-badge" alt="Try the demo"/></a>&nbsp;&nbsp;<a href="YOUR_BLOG_POST_URL_WHEN_READY"><img src="https://img.shields.io/badge/📖_Read_the_post-444444?style=for-the-badge" alt="Read the blog post"/></a>
+  <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo"
+     style="display: inline-block;
+            background: linear-gradient(180deg, #ffe066 0%, #ffd21e 40%, #f0b800 100%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+            border: 1px solid #c9960a;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+            letter-spacing: 0.03em;">
+    🤗 Try the demo
+  </a>&nbsp;&nbsp;<a href="YOUR_BLOG_POST_URL_WHEN_READY"
+     style="display: inline-block;
+            background: linear-gradient(180deg, #666666 0%, #444444 40%, #2a2a2a 100%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid #1a1a1a;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 0.03em;">
+    📖 Read the post
+  </a>
 </p>
 
 ## What is this?
