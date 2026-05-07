@@ -1,5 +1,4 @@
-![LiteLLM](https://img.shields.io/badge/LiteLLM-blueviolet?style=for-the-badge)
-![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/otheiner/PARAMETR-Bench/main/pyproject.toml&style=for-the-badge&logo=python&logoColor=ffdd54)
+[![DOI](https://zenodo.org/badge/1197193977.svg)](https://doi.org/10.5281/zenodo.20076421)
 [![CI](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
 
 # 📊 PARAMETR-Bench  
@@ -194,15 +193,24 @@ The framework then automatically follows this pipeline:
 
 If you are considering contributing task from your domain, refer to [`CONTRIBUTING.md`](https://github.com/otheiner/PARAMETR-Bench/tree/repo-redesign?tab=contributing-ov-file#contributing-a-task).
 
+
 # Citation
 
-If you find this work useful or interesting, please consider citing this repo:
+If you use PARAMETR-Bench in your work, please cite this software as:
+
+> Theiner, O. (2026). *PARAMETR-Bench: Procedural And Rigorous Assessment using METaRubrics* [Software]. Zenodo. https://doi.org/10.5281/zenodo.20076421
+
+Or use the BibTeX entry:
 
 ```bibtex
-@misc{theiner2026parametr-bench,
-  author = {Theiner, Ondrej},
-  title  = {PARAMETR-Bench: Procedural And Rigorous Assessment using METaRubrics},
-  year   = {2026},
-  url    = {https://github.com/otheiner/PARAMETR-Bench}
+@software{theiner_parametr_bench_2026,
+  author       = {Theiner, Ondrej},
+  title        = {{PARAMETR-Bench: Procedural And
+                Rigorous Assessment using METaRubrics}},
+  month        = may,
+  year         = 2026,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.20076421},
+  url          = {https://doi.org/10.5281/zenodo.20076421}
 }
 ```
