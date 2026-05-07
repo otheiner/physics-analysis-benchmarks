@@ -1,18 +1,20 @@
 {
     "metarubrics": [
         {
-            "key":         "count_circles",
-            "source":      "images",
-            "name":        "Counted circles correctly in each image",
+            "key": "count_circles",
+            "source": "images",
+            "category": "image handling",
+            "name": "Counted circles correctly in each image",
             "description": "Did the model correctly count {n_circles} circles in the image {filename}?",
-            "weight":      2.0
+            "weight": 2.0
         },
         {
-            "key":         "average_circles",
-            "source":      "result",
-            "name":        "Computed average number of circles correctly",
+            "key": "average_circles",
+            "source": "result",
+            "category": "scientific reasoning",
+            "name": "Computed average number of circles correctly",
             "description": "Did the model correctly compute the average number of circles per image as {average_circles:.2f}?",
-            "weight":      1.0
+            "weight": 1.0
         }
     ]
 }

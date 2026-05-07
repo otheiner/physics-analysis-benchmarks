@@ -32,6 +32,8 @@ class Metarubric:
     Attributes:
         key:                    - short snake_case key to identify the metarubric
         source:                 - name of the dataframe in ground_truth.json that contains the data for this metarubric
+        category:               - skill category; allowed values: "scientific reasoning" | "data manipulation" | "image handling" | "output formatting" 
+                                  (can be used for weighting and analysis by skill type)
         name:                   - short human readable name
         description:            - f-string with {column_name} placeholders - this gets unpacked 
                                   to individual rubric criteria by unpacking metarubric
@@ -45,6 +47,7 @@ class Metarubric:
 
     key :             str
     source:           str
+    category:         str
     name:             str
     description:      str
     weight:           float = 1.0
@@ -610,6 +613,7 @@ class Task(ABC):
             mr = Metarubric(
                 key            = metarubric['key'],
                 source         = metarubric['source'],
+                category       = metarubric['category'],
                 name           = metarubric['name'],
                 description    = metarubric['description'],
                 weight         = metarubric.get('weight', 1.0)
@@ -709,6 +713,7 @@ class Task(ABC):
                 {
                     'key':    mr.key,
                     'name':   mr.name,
+                    'category': mr.category,
                     'weight': mr.weight,
                     'total':  len(mr.dataframe) if mr.source != 'none' else 1,
                     'rubrics': [

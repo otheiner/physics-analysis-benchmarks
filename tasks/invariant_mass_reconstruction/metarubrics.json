@@ -3,6 +3,7 @@
         {
             "key": "invariant_masses",
             "source": "events",
+            "category": "scientific reasoning",
             "name": "Invariant mass reconstruction",
             "description": "Did the model reconstruct invariant mass of a parent particle in event {event_id} as {mass:.2f} GeV or value in range ......?",
             "weight": 1.0
