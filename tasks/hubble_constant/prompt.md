@@ -1,4 +1,4 @@
-# Hubble Constant Estimation
+# Problem definition
 
 The provided dataset contains results of a simulated observational campaign surveying galaxy spectra and Cepheid variable stars. For Cepheid variables, the period-luminosity relation is established as:
 

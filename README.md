@@ -1,15 +1,14 @@
-[![CI](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
-
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
-![SciPy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=for-the-badge&logo=Matplotlib&logoColor=black)
 ![LiteLLM](https://img.shields.io/badge/LiteLLM-blueviolet?style=for-the-badge)
+![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/otheiner/PARAMETR-Bench/main/pyproject.toml&style=for-the-badge&logo=python&logoColor=ffdd54)
+[![CI](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
 
 # 📊 PARAMETR-Bench  
 
 **P**rocedural **A**nd **R**igorous **A**ssessment using **MET**a**R**ubrics: A framework for building contamination-free scientific benchmarks for agentic LLM evaluation with deterministically generated rubrics.
+
+<p align="center">
+  <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo"><img src="https://img.shields.io/badge/🤗_Try_the_demo-FFD21E?style=for-the-badge" alt="Try the demo"/></a>&nbsp;&nbsp;<a href="https://otheiner.github.io/blog/PARAMETR-Bench/"><img src="https://img.shields.io/badge/📖_Read_the_post-444444?style=for-the-badge" alt="Read the blog post"/></a>
+</p>
 
 ## What is this?
 

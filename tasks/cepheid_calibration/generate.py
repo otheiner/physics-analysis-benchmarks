@@ -39,7 +39,7 @@ class CepheidCalibration(Task):
                             title: str = '', 
                             name: str = '') -> None:
 
-        wavelength = np.linspace(lambda_min, lambda_max, 7000)
+        wavelength = np.linspace(lambda_min, lambda_max, 3500)
         intensity = np.zeros_like(wavelength)
         for mu, amp in input_spectrum.items():
             intensity += self.gaussian(wavelength, float(mu), sigma=0.1, amplitude=amp)
@@ -68,7 +68,7 @@ class CepheidCalibration(Task):
         ax.set_ylim(0, 1.05)
 
         plt.tight_layout()
-        plt.savefig(f"{save_to}/{name}.png", dpi=300, bbox_inches="tight", 
+        plt.savefig(f"{save_to}/{name}.png", dpi=150, bbox_inches="tight",
                     facecolor=fig.get_facecolor())
         plt.close()
     
@@ -94,8 +94,8 @@ class CepheidCalibration(Task):
                                 lab_spectrum: dict,
                                 wav_min: float, 
                                 wav_max: float,
-                                reading_resolution : float, 
-                                n_pts=7000) -> tuple[float, float]:
+                                reading_resolution : float,
+                                n_pts=3500) -> tuple[float, float]:
         log_wav = np.linspace(np.log(wav_min), np.log(wav_max), n_pts)
 
         def make_intensity_log(spectrum):
@@ -186,20 +186,8 @@ class CepheidCalibration(Task):
 
         RESULTS_A_B_TOLERANCE = self.get_params()["RESULTS_A_B_TOLERANCE"]
 
-        # Dataframes used to store data
-        generated_data = pd.DataFrame({ 'index': pd.Series(dtype='int'),
-                    'galaxy_ID': pd.Series(dtype='str'),
-                    'z' : pd.Series(dtype='float'),
-                    'spectrum' : pd.Series(dtype='object'),
-                    'true_distance [pc]' : pd.Series(dtype='float'),
-                    'cepheid_ID': pd.Series(dtype='str'),
-                    'cepheid_distance [pc]' : pd.Series(dtype='float'),
-                    'mean_mag_cepheid': pd.Series(dtype='float'),
-                    'period [days]': pd.Series(dtype='float'),
-                    'sigma_z_estimated' : pd.Series(dtype='float'),
-                    'z_allowed_interval' : pd.Series(dtype='str'),
-                    'distance_estimated [pc]' : pd.Series(dtype='float'),
-                    'absolute_mag_estimated' : pd.Series(dtype='float')})
+        # Rows accumulated per galaxy; concat once after the loop
+        rows = []
         
         redshifts = pd.DataFrame({'cepheid_ID': pd.Series(dtype='str'),
                                   'z' : pd.Series(dtype='float') , 
@@ -270,9 +258,8 @@ class CepheidCalibration(Task):
                 mean_mag = np.nan
 
             if not np.isnan(z) and spectrum:
-                estimated_z, sigma_z = self.estimate_z_logspace(spectrum, LAB_SPECTRUM, wav_min=LAMBDA_MIN, 
-                                                                wav_max=LAMBDA_MAX, reading_resolution = READING_PRECISION,
-                                                                n_pts=7000)
+                estimated_z, sigma_z = self.estimate_z_logspace(spectrum, LAB_SPECTRUM, wav_min=LAMBDA_MIN,
+                                                                wav_max=LAMBDA_MAX, reading_resolution=READING_PRECISION)
                 distance_estimated = estimated_z * c / H0 * 10**6
                 interval = f"[{z-0.0001:.5f}, {z+0.0001:.5f}]"
             else:
@@ -285,22 +272,21 @@ class CepheidCalibration(Task):
             else:
                 absolute_mag_estimated = np.nan
 
-            # Fill the dataframe with the row of generated data
-            new_row = pd.DataFrame([{'index' : index,
-                                    'galaxy_ID' : galaxy_ID,
-                                    'z' : z,
-                                    'spectrum' : spectrum,
-                                    'true_distance [pc]' : true_distance,
-                                    'cepheid_ID' : cepheid_ID,
-                                    'cepheid_distance [pc]' : cepheid_distance,
-                                    'mean_mag_cepheid' : mean_mag,
-                                    'period [days]' : period,
-                                    'sigma_z_estimated': sigma_z,
-                                    'z_allowed_interval' : interval,
-                                    'distance_estimated [pc]' : distance_estimated,
-                                    'absolute_mag_estimated' : absolute_mag_estimated}])
-            
-            generated_data = pd.concat([generated_data, new_row], ignore_index=True)
+            rows.append({'index': index,
+                         'galaxy_ID': galaxy_ID,
+                         'z': z,
+                         'spectrum': spectrum,
+                         'true_distance [pc]': true_distance,
+                         'cepheid_ID': cepheid_ID,
+                         'cepheid_distance [pc]': cepheid_distance,
+                         'mean_mag_cepheid': mean_mag,
+                         'period [days]': period,
+                         'sigma_z_estimated': sigma_z,
+                         'z_allowed_interval': interval,
+                         'distance_estimated [pc]': distance_estimated,
+                         'absolute_mag_estimated': absolute_mag_estimated})
+
+        generated_data = pd.DataFrame(rows)
         
         
         generated_data[['galaxy_ID', 'cepheid_ID', 'mean_mag_cepheid', 'period [days]']].round(
