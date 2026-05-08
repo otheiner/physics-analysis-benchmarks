@@ -1,5 +1,4 @@
-![LiteLLM](https://img.shields.io/badge/LiteLLM-blueviolet?style=for-the-badge)
-![Python](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/otheiner/PARAMETR-Bench/main/pyproject.toml&style=for-the-badge&logo=python&logoColor=ffdd54)
+[![DOI](https://private-user-images.githubusercontent.com/44167540/589451511-799b8ec5-cc08-4e1b-a182-4e784fa78244.svg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzgyMzE3NTksIm5iZiI6MTc3ODIzMTQ1OSwicGF0aCI6Ii80NDE2NzU0MC81ODk0NTE1MTEtNzk5YjhlYzUtY2MwOC00ZTFiLWExODItNGU3ODRmYTc4MjQ0LnN2Zz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA1MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNTA4VDA5MTA1OVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWI4MWU3MTM5MmZkYWJhYzIxMWM5NDhhNWJjMGRhMTQzZWM4YTZjMzRjNzc1YWY0ZWUzYWI1NTgyZWVmZTA1N2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnN2ZyUyQnhtbCJ9.IZ2Co1jdwQczZ3D0w5yuOXFoShSRcu_EPSpita4q5rk)](https://doi.org/10.5281/zenodo.20076421)
 [![CI](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml/badge.svg)](https://github.com/otheiner/PARAMETR-Bench/actions/workflows/ci.yml)
 
 # 📊 PARAMETR-Bench  
@@ -194,15 +193,24 @@ The framework then automatically follows this pipeline:
 
 If you are considering contributing task from your domain, refer to [`CONTRIBUTING.md`](CONTRIBUTING.md#contributing-a-task).
 
+
 # Citation
 
-If you find this work useful or interesting, please consider citing this repo:
+If you use PARAMETR-Bench in your work, please cite this software as:
+
+> Theiner, O. (2026). *PARAMETR-Bench: Procedural And Rigorous Assessment using METaRubrics* [Software]. Zenodo. https://doi.org/10.5281/zenodo.20076421
+
+Or use the BibTeX entry:
 
 ```bibtex
-@misc{theiner2026parametr-bench,
-  author = {Theiner, Ondrej},
-  title  = {PARAMETR-Bench: Procedural And Rigorous Assessment using METaRubrics},
-  year   = {2026},
-  url    = {https://github.com/otheiner/PARAMETR-Bench}
+@software{theiner_parametr_bench_2026,
+  author       = {Theiner, Ondrej},
+  title        = {{PARAMETR-Bench: Procedural And
+                Rigorous Assessment using METaRubrics}},
+  month        = may,
+  year         = 2026,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.20076421},
+  url          = {https://doi.org/10.5281/zenodo.20076421}
 }
 ```
