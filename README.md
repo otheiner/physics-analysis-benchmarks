@@ -6,7 +6,7 @@
 **P**rocedural **A**nd **R**igorous **A**ssessment using **MET**a**R**ubrics: A framework for building contamination-free scientific benchmarks for agentic LLM evaluation with deterministically generated rubrics.
 
 <p align="center">
-  <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo"><img src="https://img.shields.io/badge/🤗_Try_the_demo-FFD21E?style=for-the-badge" alt="Try the demo"/></a>&nbsp;&nbsp;<a href="https://otheiner.github.io/blog/PARAMETR-Bench/"><img src="https://img.shields.io/badge/📖_Read_the_post-444444?style=for-the-badge" alt="Read the blog post"/></a>
+  <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo"><img src="https://img.shields.io/badge/🤗_Try_the_demo-FFD21E?style=for-the-badge" alt="Try the demo"/></a>&nbsp;&nbsp;<a href="https://otheiner.github.io/PARAMETR-Bench"><img src="https://img.shields.io/badge/📖_Read_the_post-444444?style=for-the-badge" alt="Read the blog post"/></a>
 </p>
 
 ## What is this?
@@ -191,7 +191,7 @@ The framework then automatically follows this pipeline:
 
 # Contributing tasks
 
-If you are considering contributing task from your domain, refer to [`CONTRIBUTING.md`](https://github.com/otheiner/PARAMETR-Bench/tree/repo-redesign?tab=contributing-ov-file#contributing-a-task).
+If you are considering contributing task from your domain, refer to [`CONTRIBUTING.md`](CONTRIBUTING.md#contributing-a-task).
 
 
 # Citation
