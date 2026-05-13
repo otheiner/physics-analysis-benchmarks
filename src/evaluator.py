@@ -27,9 +27,11 @@ class Evaluator:
 
         # Step 1 — send task to model
         if agentic:
-            model_output = self._send_to_model_agentic(task, model, max_turns)
+            model_output, transcript = self._send_to_model_agentic(task, model, max_turns)
         else:
-            model_output = self._send_to_model(task, model)
+            model_output, transcript = self._send_to_model(task, model)
+
+        self._save_transcript(task, model, transcript)
 
         # Step 2 — judge output against pre-generated rubrics
         mr_results = self._judge(task, model_output, judge)
@@ -52,9 +54,12 @@ class Evaluator:
     def _litellm_completion_with_retry(self, **kwargs):
         for attempt in range(3):
             try:
-                return litellm.completion(**kwargs)
+                return litellm.completion(**kwargs, request_timeout=300)
             except (litellm.ServiceUnavailableError,
-                    litellm.RateLimitError) as e:
+                    litellm.RateLimitError,
+                    litellm.InternalServerError,
+                    litellm.Timeout,
+                    litellm.APIConnectionError) as e:
                 if attempt == 2:
                     print(e)
                     print(f"✗ API unavailable after 3 attempts:")
@@ -63,6 +68,36 @@ class Evaluator:
                 print(f"ERROR: {e}")
                 print(f"⚠  API unavailable — retrying in {wait}s ({attempt+1}/3)")
                 time.sleep(wait)
+
+    # ─────────────────────────────────────────
+    # Save full conversation transcript
+    # ─────────────────────────────────────────
+    def _save_transcript(self, task: Task, model: str, messages: list,
+                         results_dir: str = 'results'):
+        model_clean = model.replace('/', '-').replace(':', '-')
+        task_dir    = Path(results_dir) / 'model_responses' / task.folder.name
+        task_dir.mkdir(parents=True, exist_ok=True)  # creates model_responses/ if missing
+        filename = f"{model_clean}__{task.difficulty}__seed{task.seed}.json"
+        path     = task_dir / filename
+        with open(path, 'w') as f:
+            json.dump({
+                'task':     task.folder.name,
+                'model':    model,
+                'seed':     task.seed,
+                'messages': messages,
+            }, f, indent=2)
+        print(f"✓ Transcript saved: {path}")
+
+    # ─────────────────────────────────────────
+    # Print thinking blocks from a message dump
+    # ─────────────────────────────────────────
+    def _print_thinking(self, message_dump: dict):
+        content = message_dump.get('content', '')
+        if not isinstance(content, list):
+            return
+        for block in content:
+            if isinstance(block, dict) and block.get('type') == 'thinking':
+                print(f"\n[THINKING]\n{block.get('thinking', '')}\n[/THINKING]")
 
     # ─────────────────────────────────────────
     # Load judge prompt
@@ -94,13 +129,13 @@ class Evaluator:
     # ─────────────────────────────────────────
     # Send to model
     # ─────────────────────────────────────────
-    def _send_to_model(self, task: Task, model: str) -> str:
+    def _send_to_model(self, task: Task, model: str) -> tuple[str, list]:
         """Build message from task prompt + input files, call model, return response."""
         messages = [{
             'role':    'user',
             'content': [
                 {'type': 'text', 'text': task.get_prompt()},
-                *task.get_input_files(model)
+                *task.get_input_files(embed_data=True)
             ]
         }]
 
@@ -110,14 +145,17 @@ class Evaluator:
                 messages = messages,
                 temperature = 0.0,
             )
+            assistant_msg = response.choices[0].message.model_dump()
+            messages.append(assistant_msg)
             model_output = response.choices[0].message.content
-    
+
+            self._print_thinking(assistant_msg)
             print(f"\n{'=' * 50}")
             print(f"MODEL OUTPUT ({model}):")
             print(f"{'=' * 50}")
             print(model_output)
-            
-            return model_output
+
+            return model_output, messages
 
         except litellm.AuthenticationError:
             print(f"✗ Authentication failed for '{model}' — check your API key")
@@ -163,7 +201,7 @@ class Evaluator:
                 'content': [
                     {'type': 'text',
                      'text': task.get_prompt() + self.load_agentic_prompt(max_turns, vision)},
-                            *task.get_input_files(model, embed_data=False)
+                            *task.get_input_files(embed_data=False)
                 ]
             }]
 
@@ -180,6 +218,7 @@ class Evaluator:
                         f"Model {model} returned an empty response (no choices). "
                     )
                 message = response.choices[0].message
+                self._print_thinking(message.model_dump())
 
                 # No tool calls — model finished analysis, ask for summary
                 if not message.tool_calls:
@@ -205,6 +244,9 @@ class Evaluator:
                         temperature = 0.0
                     )
 
+                    summary_msg  = summary.choices[0].message.model_dump()
+                    messages.append(summary_msg)
+                    self._print_thinking(summary_msg)
                     final_answer = summary.choices[0].message.content or ''
 
                     print(f"\n{'-' * 50}")
@@ -212,7 +254,7 @@ class Evaluator:
                     print('-' * 50)
                     print(final_answer)
 
-                    return final_answer
+                    return final_answer, messages
 
                 # Append assistant turn to history
                 messages.append(message.model_dump())
@@ -325,6 +367,9 @@ class Evaluator:
                 temperature = 0.0
             )
 
+            summary_msg  = summary.choices[0].message.model_dump()
+            messages.append(summary_msg)
+            self._print_thinking(summary_msg)
             final_answer = summary.choices[0].message.content or "No summary produced."
 
             print(f"\n{'-' * 50}")
@@ -332,7 +377,7 @@ class Evaluator:
             print('-' * 50)
             print(final_answer)
 
-            return final_answer
+            return final_answer, messages
 
         finally:
             # Clean up session workspace — always runs even if exception occurs

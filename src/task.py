@@ -549,7 +549,7 @@ class Task(ABC):
     # ─────────────────────────────────────────
     # Loading input files and preparing them for LLM
     # ─────────────────────────────────────────
-    def get_input_files(self, model: str = '', embed_data: bool = True) -> list[dict]:
+    def get_input_files(self, embed_data: bool = True) -> list[dict]:
         content = []
 
         for filepath in sorted(self.input_dir.rglob('*')):
