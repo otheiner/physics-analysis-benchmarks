@@ -75,8 +75,8 @@ class Evaluator:
     def _save_transcript(self, task: Task, model: str, messages: list,
                          results_dir: str = 'results'):
         model_clean = model.replace('/', '-').replace(':', '-')
-        task_dir    = Path(results_dir) / 'model_responses' / task.folder.name
-        task_dir.mkdir(parents=True, exist_ok=True)  # creates model_responses/ if missing
+        task_dir    = Path(results_dir) / task.folder.name / 'model_responses'
+        task_dir.mkdir(parents=True, exist_ok=True)
         filename = f"{model_clean}__{task.difficulty}__seed{task.seed}.json"
         path     = task_dir / filename
         with open(path, 'w') as f:
@@ -92,12 +92,9 @@ class Evaluator:
     # Print thinking blocks from a message dump
     # ─────────────────────────────────────────
     def _print_thinking(self, message_dump: dict):
-        content = message_dump.get('content', '')
-        if not isinstance(content, list):
-            return
-        for block in content:
-            if isinstance(block, dict) and block.get('type') == 'thinking':
-                print(f"\n[THINKING]\n{block.get('thinking', '')}\n[/THINKING]")
+        reasoning = message_dump.get('reasoning_content')
+        if reasoning:
+            print(f"\n[THINKING]\n{reasoning}\n[/THINKING]")
 
     # ─────────────────────────────────────────
     # Load judge prompt
