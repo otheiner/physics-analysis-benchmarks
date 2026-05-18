@@ -1,6 +1,8 @@
 # Contributing a task
 
-This project started as a personal passion project but it would be great if it grows into something bigger. If you feel motivated to contribute a task from your domain (or you have any suggestion), reach out to me [here](https://otheiner.github.io/#contact) and I will be happy to help. Contributing process is simple:
+This started as a personal passion project, but it would be great if it grows into something larger. Even if it doesn't, this document serves as documentation of how to add a new task to the framework and is addressed to my future self as much as anyone else.
+
+If you'd like to contribute a task from your domain (or just have a suggestion), reach out [here](https://otheiner.github.io/#contact) and I'll be happy to help. The contribution process is straightforward:
 
 ## 1) Fork the repository and clone it
 
