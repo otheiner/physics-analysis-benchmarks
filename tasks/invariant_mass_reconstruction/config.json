@@ -8,8 +8,9 @@
             "MEAN_LAMBDA_BKG_DECAY": 0.3,
             "LAYER_RADII": [0.05, 0.55],
             "MEAN_GAMMA_SIGNAL" : 10,
-            "MASS_TOLERANCE" : 1.0,
-            "WIDTH_TOLERANCE" : 1.0
+            "MASS_TOLERANCE" : 0.02,
+            "WIDTH_TOLERANCE" : 1.0,
+            "PER-EVENT_MASS_TOLERANCE" : 0.1
         },
         "medium": {
             "N_EVENTS": 1000,
@@ -17,8 +18,9 @@
             "MEAN_LAMBDA_BKG_DECAY": 0.1,
             "LAYER_RADII": [0.05, 0.30, 0.60],
             "MEAN_GAMMA_SIGNAL" : 3,
-            "MASS_TOLERANCE" : 0.5,
-            "WIDTH_TOLERANCE" : 0.5
+            "MASS_TOLERANCE" : 0.01,
+            "WIDTH_TOLERANCE" : 0.5,
+            "PER-EVENT_MASS_TOLERANCE" : 0.05
         },
         "hard": {
             "N_EVENTS": 10000,
@@ -26,8 +28,9 @@
             "MEAN_LAMBDA_BKG_DECAY": 0.05,
             "LAYER_RADII": [0.05, 0.15, 0.30, 0.55],
             "MEAN_GAMMA_SIGNAL" : 1,
-            "MASS_TOLERANCE" : 0.1,
-            "WIDTH_TOLERANCE" : 0.3
+            "MASS_TOLERANCE" : 0.005,
+            "WIDTH_TOLERANCE" : 0.3,
+            "PER-EVENT_MASS_TOLERANCE" : 0.01
         }
     },
 

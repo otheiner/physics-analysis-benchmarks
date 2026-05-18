@@ -20,6 +20,8 @@ Management of the company also wants to list all machines with a failure rate st
 ________________________________________
 ## Output format
 
+The final output is used to grade your answer.
+
 Structure your response according to the following template:
  
 DATA FOR QUALITY ASSURANCE

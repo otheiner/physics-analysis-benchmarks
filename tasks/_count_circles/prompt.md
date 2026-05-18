@@ -10,6 +10,8 @@ ________________________________________
 
 ## Output format
 
+The final output is used to grade your answer.
+
 Enclose your final results into formatting tags [final_result] [/final_result] and structure your response exactly as follows:
 
 [final_result] 

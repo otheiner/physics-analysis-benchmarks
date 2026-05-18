@@ -5,14 +5,18 @@
 ________________________________________
 ## Output format
 
-Structure your response exactly as follows:
+The final output is used to grade your answer. 
 
-<INTERMEDIATE_RESULTS>:
-<result1>
-<result2>
+Structure your response according to the following template:
 
-<FINAL_RESULT>:
-<final_result>
+<Define the output format. If you want to check intermediate results of the analysis, force the model to print them here.>
+
+INTERMEDIATE_RESULTS:
+[result1]
+[result2]
+
+FINAL_RESULT:
+[final_result]
 
 ________________________________________
 ## Files provided

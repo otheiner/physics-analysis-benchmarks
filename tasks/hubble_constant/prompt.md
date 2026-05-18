@@ -12,6 +12,8 @@ State the result in km/s/Mpc rounded to one decimal place ± absolute statistica
 ________________________________________
 ## Output format
 
+The final output is used to grade your answer.
+
 Structure your response according to the following template:
 
 SUMMARY:

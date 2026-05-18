@@ -13,7 +13,7 @@
             "source": "none",
             "category": "output formatting",
             "name": "Per-event mass listing",
-            "description": "Did the model list the invariant masses of the parent particle in the events?",
+            "description": "Did the model list the invariant masses of the parent particle in INTERMEDIATE RESULTS PER EVENT section?",
             "weight": 1.0
         },
         {

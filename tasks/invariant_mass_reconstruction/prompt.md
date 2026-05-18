@@ -13,12 +13,12 @@ Assume that you know that some electron-positron pairs come from the new unknown
 ________________________________________
 ## Output format
 
-Structure your response according to the following template:
+The final output is used to grade your answer. Structure your response according to the following template:
 
 SUMMARY:
 [high level summary of your approach, including key formulas used in the task]
 
-INTERMEDIATE_RESULTS:
+INTERMEDIATE RESULTS PER EVENT:
 event ID , reconstructed invariant mass 
 [value] , [value]
 [value] , [value]

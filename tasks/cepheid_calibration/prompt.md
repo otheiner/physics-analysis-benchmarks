@@ -17,6 +17,8 @@ Use the provided data to estimate numeric values of parameters $a$ and $b$ in th
 ________________________________________
 ## Output format
 
+The final output is used to grade your answer.
+
 Structure your response according to the following template:
 
 ESTIMATED REDSHIFTS

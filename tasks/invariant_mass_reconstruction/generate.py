@@ -353,6 +353,7 @@ class InvariantMassReconstruction(Task):
     def assemble_dataframes(
         self,
         masses,
+        per_event_mass_tolerance,
         is_signal,
         tracker_hits_d1,
         tracker_hits_d2,
@@ -367,6 +368,7 @@ class InvariantMassReconstruction(Task):
         Parameters
         ----------
         masses        : (n,) true invariant masses
+        per_event_mass_tolerance: (n,) per-event mass tolerance value, e.g. 0.1 of true mass, to be used in evaluation
         is_signal     : (n,) bool
         tracker_hits_d1 : list of (x, y, z) tuples per tracker layer, each (n,)
         tracker_hits_d2 : same for daughter 2
@@ -378,7 +380,7 @@ class InvariantMassReconstruction(Task):
 
         Returns
         -------
-        df_events  : event_id, mass, is_signal
+        df_events  : event_id, mass, is_signal, mass_min, mass_max
         df_tracker : event_id, d1_x_{layer}, d1_y_{layer}, d1_z_{layer},
                             d2_x_{layer}, d2_y_{layer}, d2_z_{layer}, ...
         df_ecal    : event_id, d1_x, d1_y, d1_z, d1_energy,
@@ -392,6 +394,8 @@ class InvariantMassReconstruction(Task):
             'event_id': event_ids,
             'mass':     masses,
             'is_signal': is_signal,
+            'mass_min': masses * (1.0 - per_event_mass_tolerance),
+            'mass_max': masses * (1.0 + per_event_mass_tolerance),
         })
 
         tracker_data = {'event_id': event_ids}
@@ -447,6 +451,7 @@ class InvariantMassReconstruction(Task):
         B_FIELD = self.get_params()['B_FIELD']
         LAYER_RADII = self.get_params()['LAYER_RADII']
         ECAL_RADIUS = self.get_params()['ECAL_RADIUS']
+        PER_EVENT_MASS_TOLERANCE = self.get_params()['PER-EVENT_MASS_TOLERANCE']
 
         # ======= TASK GENERATION =======
         particle_mass = rng.uniform(M_SIG_MIN, M_SIG_MAX)
@@ -513,6 +518,7 @@ class InvariantMassReconstruction(Task):
         layer_names = [f"tracker layer {i+1}" for i in range(len(LAYER_RADII))]
         df_events, df_tracker, df_ecal = self.assemble_dataframes(
             masses=m,
+            per_event_mass_tolerance=PER_EVENT_MASS_TOLERANCE,
             is_signal=is_signal,
             tracker_hits_d1=track1_hits,
             tracker_hits_d2=track2_hits,
