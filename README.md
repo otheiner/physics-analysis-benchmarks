@@ -32,6 +32,10 @@ Try the inteactive task generation online or read the detailed technical blog po
   <a href="https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo"><img src="https://img.shields.io/badge/🤗_Try_the_demo-FFD21E?style=for-the-badge" alt="Try the demo"/></a>&nbsp;&nbsp;<a href="https://otheiner.github.io/PARAMETR-Bench-blog"><img src="https://img.shields.io/badge/📖_Read_the_post-444444?style=for-the-badge" alt="Read the blog post"/></a>
 </p>
 
+# Results
+
+Initial evaluations across frontier models are in progress and will be published here soon to demonstarte the framework.
+
 # Motivation 
 
 I am a particle physicist who recently got into LLM evaluation and I built this as a passion project to test if models can actually do science. I tried to design the architecture to specifically address major issues in the field, such as benchmark contamination, rubric drift, and the stochastic nature of LLM responses. If you have any questions, comments, suggestions, or you would be interested in contributing, don't hesitate to reach out to me [here](https://otheiner.github.io/#contact).
@@ -106,10 +110,6 @@ python run.py --validate-only
 ```
 
 You can also run full evals with local models via Ollama. You need to start the Ollama server and pass an Ollama model to `run.py`, e.g. `--model ollama/qwen2.5:3b`.
-
-# Results
-
-This project is still in the initial stage and the first results to demonstrate the framework will be added soon.
 
 # Contributing tasks
 
