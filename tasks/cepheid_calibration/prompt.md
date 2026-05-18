@@ -17,12 +17,14 @@ Use the provided data to estimate numeric values of parameters $a$ and $b$ in th
 ________________________________________
 ## Output format
 
-Structure your response exactly as follows:
+The final output is used to grade your answer.
 
----ESTIMATED REDSHIFTS---
-CEPHEID_ID          REDSHIFT
-[ID1]                 [z1]
-[ID2]                 [z2]
+Structure your response according to the following template:
+
+ESTIMATED REDSHIFTS
+CEPHEID_ID , REDSHIFT
+[ID1] , [z1]
+[ID2] , [z2]
 .....
 
 PARAMETER a:
