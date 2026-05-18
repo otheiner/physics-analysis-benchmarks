@@ -43,15 +43,6 @@ git clone https://github.com/otheiner/PARAMETR-Bench.git
 cd PARAMETR-Bench
 pip install .
 ```
-## No API keys? No problem!
-
-You can run task generation locally without any API calls — useful for inspecting generated data before spending tokens. The [Hugging Face Space](https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo) offers the same thing in the browser, though it may struggle with heavier tasks due to resource limits; running locally avoids that.
-
-```bash
-python run.py --validate-only
-```
-
-To run the actual tests (not just data generation) without using API keys, you can also use local models of your choice supported by [Ollama](https://ollama.com). Just run ollama server and in the `run.py` specify ollama model, e.g. `ollama/qwen2.5:3b`. How to use `run.py` is described bellow.
 
 ## API models
 
@@ -65,7 +56,7 @@ Framework allows non-agentic (no tools allowed) and agentic (allows running pyth
 
 ## Model evaluation
 
-For non-agentic evaluation simply run:
+For **non-agentic evaluation** simply run:
 
 ```bash
 python run.py --model gemini/gemini-3.1-flash-lite-preview \
@@ -75,7 +66,7 @@ python run.py --model gemini/gemini-3.1-flash-lite-preview \
 ```
 This sends LLM prompt and all the data in one message and LLM has one shot to return the result.
 
-Agentic evaluation enables performing more realistic scientific tasks. Agent gets only the prompt and list of files to work with and it has then the ability to use tools to inspect these files and analyze them by python, which is executed in safe Docker sandbox environment without access to the Internet. First of all, run docker daemon on your machine. Description of the sandbox environment and its Dockerfile is located in `sandbox` folder. 
+**Agentic evaluation** enables performing more realistic scientific tasks. Agent gets only the prompt and list of files to work with and it has then the ability to use tools to inspect these files and analyze them by python, which is executed in safe Docker sandbox environment without access to the Internet. First of all, run docker daemon on your machine. Description of the sandbox environment and its Dockerfile is located in `sandbox` folder. 
 
 Build the sandbox Docker image and run benchmark using flag `--agentic`:
 
@@ -93,16 +84,26 @@ python run.py --model gemini/gemini-3.1-flash-lite-preview \
 API failures outside your control shouldn't cost you a full re-run. Each run creates a folder in `results/` named `<run_ID>_<date>_<time>`, where `<run_ID>` is a 6-character alphanumeric string. To resume an interrupted run:
 
 ```bash
-python run.py --continue-run <run_ID>
+python run.py --continue-run run_ID
 ```
 
 **What gets preserved**
 
-Completed tasks are flushed to disk as they finish, so they survive any kind of failure. For the in-flight sequence (mid-agentic loop), the framework snapshots state on caught failures (API errors, timeouts, exceptions) and can resume from the exact turn where it failed — both the LLM and the Docker sandbox are stateless, so replaying the message history and remounting the working directory fully reconstructs the run. A hard kill (Ctrl-C, crash, power loss) still preserves all completed sequences, but the in-flight one restarts from turn zero.
+Completed tasks are flushed to disk as they finish, so they survive any kind of failure. For the in-flight sequence (mid-agentic loop, or when judge fails), the framework snapshots state on caught failures (API errors, timeouts, exceptions) and can resume from the exact turn where it failed — both the LLM and the Docker sandbox are stateless, so replaying the message history and remounting the working directory fully reconstructs the run. A hard kill (Ctrl-C, crash, power loss) still preserves all completed sequences, but the in-flight one restarts from turn zero.
 
 **Repository state**
 
 Each run stores the git commit hash at start time. If the repository has changed since, you'll be asked to check out the original commit before resuming — this keeps the initial run and the continuation consistent.
+
+## No API keys? No problem!
+   
+You can just inspect generated data (no model calls). The [Hugging Face Space](https://huggingface.co/spaces/otheiner/PARAMETR-Bench_demo) does the same in-browser but may hit resource limits on heavier tasks. To run the task generation locally just do:
+
+```bash
+python run.py --validate-only
+```
+
+You can also run full evals with local models via Ollama. You need to start the Ollama server and pass an Ollama model to `run.py`, e.g. `--model ollama/qwen2.5:3b`.
 
 # Results
 
